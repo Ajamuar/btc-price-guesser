@@ -20,14 +20,14 @@ export function SiteHeader({ session }: SiteHeaderProps) {
         {session ? (
           <Link
             href="/api/auth/signout?callbackUrl=/"
-            className="text-sm font-medium text-muted-foreground hover:text-foreground"
+            className="rounded-md text-sm font-medium text-muted-foreground outline-none hover:text-foreground focus-visible:ring-2 focus-visible:ring-teal-400 focus-visible:ring-offset-2 focus-visible:ring-offset-white dark:focus-visible:ring-teal-400 dark:focus-visible:ring-offset-teal-950"
           >
             Sign out
           </Link>
         ) : (
           <Link
             href="/api/auth/signin?callbackUrl=/"
-            className="text-sm font-medium text-muted-foreground hover:text-foreground"
+            className="rounded-md text-sm font-medium text-muted-foreground outline-none hover:text-foreground focus-visible:ring-2 focus-visible:ring-teal-400 focus-visible:ring-offset-2 focus-visible:ring-offset-white dark:focus-visible:ring-teal-400 dark:focus-visible:ring-offset-teal-950"
           >
             Sign in
           </Link>

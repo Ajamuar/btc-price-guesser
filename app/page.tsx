@@ -20,7 +20,7 @@ export default async function Home() {
             <Button
               asChild
               size="lg"
-              className="w-full min-h-12 sm:w-auto sm:min-h-11 bg-teal-600 text-white shadow-md no-underline hover:bg-teal-700 hover:text-white"
+              className="w-full min-h-12 sm:w-auto sm:min-h-11 bg-teal-600 text-white shadow-md no-underline hover:bg-teal-700 hover:text-white focus-visible:ring-teal-400 focus-visible:ring-offset-2 focus-visible:ring-offset-teal-50 dark:focus-visible:ring-teal-400 dark:focus-visible:ring-offset-teal-950"
             >
               <Link href={playHref} className="no-underline">Play</Link>
             </Button>
