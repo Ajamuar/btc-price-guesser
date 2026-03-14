@@ -1,4 +1,4 @@
-import { GetCommand, PutCommand } from "@aws-sdk/lib-dynamodb";
+import { GetCommand, PutCommand, UpdateCommand } from "@aws-sdk/lib-dynamodb";
 import { hash, compare } from "bcryptjs";
 import { docClient, tableName } from "@/lib/dynamodb";
 
@@ -38,6 +38,32 @@ export async function getUserById(userId: string): Promise<UserProfile | null> {
     pendingGuess: (Item.pendingGuess as UserProfile["pendingGuess"]) ?? null,
     ...(Item.passwordHash && { passwordHash: Item.passwordHash as string }),
   };
+}
+
+export async function setPendingGuess(
+  userId: string,
+  direction: "up" | "down",
+  priceAtGuess: number
+): Promise<void> {
+  const timestamp = Date.now();
+  await docClient.send(
+    new UpdateCommand({
+      TableName: tableName,
+      Key: {
+        pk: `USER#${userId}`,
+        sk: "PROFILE",
+      },
+      UpdateExpression: "SET pendingGuess = :pg",
+      ExpressionAttributeValues: {
+        ":pg": {
+          direction,
+          timestamp,
+          priceAtGuess,
+        },
+      },
+      ConditionExpression: "attribute_not_exists(pendingGuess)",
+    })
+  );
 }
 
 export async function createUser(
