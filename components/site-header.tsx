@@ -19,7 +19,7 @@ export function SiteHeader({ session }: SiteHeaderProps) {
       <nav>
         {session ? (
           <Link
-            href="/api/auth/signout?callbackUrl=/"
+            href="/auth/signout"
             className="rounded-md text-sm font-medium text-muted-foreground outline-none hover:text-foreground focus-visible:ring-2 focus-visible:ring-teal-400 focus-visible:ring-offset-2 focus-visible:ring-offset-white dark:focus-visible:ring-teal-400 dark:focus-visible:ring-offset-teal-950"
           >
             Sign out
