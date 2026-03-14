@@ -1,0 +1,32 @@
+import { getServerSession } from "next-auth";
+import { authOptions } from "@/lib/auth";
+import { getUserById } from "@/lib/user";
+import { NextResponse } from "next/server";
+
+export async function GET() {
+  const session = await getServerSession(authOptions);
+  if (!session?.user?.id) {
+    return NextResponse.json(
+      { error: "Unauthorized" },
+      { status: 401 }
+    );
+  }
+
+  const profile = await getUserById(session.user.id);
+  if (!profile) {
+    return NextResponse.json(
+      { error: "Unauthorized" },
+      { status: 401 }
+    );
+  }
+
+  return NextResponse.json({
+    user: {
+      id: profile.userId,
+      email: profile.email,
+      name: profile.name,
+    },
+    score: profile.score,
+    pendingGuess: profile.pendingGuess,
+  });
+}
