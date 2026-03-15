@@ -37,11 +37,19 @@ export async function getBinancePriceAtTime(
       if (apiKey) headers["x-api-key"] = apiKey;
 
       const res = await fetch(url, { headers });
-      if (!res.ok) return null;
-
       const data = (await res.json()) as unknown;
-      return parseKlinesResponse(data);
-    } catch {
+      const price = res.ok ? parseKlinesResponse(data) : null;
+      console.log("[binance] proxy", {
+        status: res.status,
+        ok: res.ok,
+        hasArray: Array.isArray(data),
+        arrayLength: Array.isArray(data) ? data.length : 0,
+        price: price ?? "null",
+      });
+      if (!res.ok) return null;
+      return price;
+    } catch (err) {
+      console.log("[binance] proxy error", { err: String(err) });
       return null;
     }
   }
@@ -56,11 +64,19 @@ export async function getBinancePriceAtTime(
 
   try {
     const res = await fetch(`${BINANCE_KLINES_URL}?${params.toString()}`);
-    if (!res.ok) return null;
-
     const data = (await res.json()) as unknown;
-    return parseKlinesResponse(data);
-  } catch {
+    const price = res.ok ? parseKlinesResponse(data) : null;
+    console.log("[binance] direct", {
+      status: res.status,
+      ok: res.ok,
+      hasArray: Array.isArray(data),
+      arrayLength: Array.isArray(data) ? data.length : 0,
+      price: price ?? "null",
+    });
+    if (!res.ok) return null;
+    return price;
+  } catch (err) {
+    console.log("[binance] direct error", { err: String(err) });
     return null;
   }
 }

@@ -56,5 +56,13 @@ export async function GET() {
   };
   if (resolution) body.resolution = resolution;
 
+  console.log("[api/me]", {
+    userId: session.user.id,
+    score: body.score,
+    hasPendingGuess: body.pendingGuess != null,
+    hasResolution: resolution != null,
+    resolutionResult: resolution?.result,
+  });
+
   return NextResponse.json(body);
 }

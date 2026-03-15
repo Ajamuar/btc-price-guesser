@@ -59,12 +59,56 @@ export async function tryResolve(
 
   const resolutionTimeMs = guessTimestamp + SIXTY_SECONDS_MS;
   const priceAt60s = await getBinancePriceAtTime(resolutionTimeMs);
-  if (priceAt60s === null) return { profile };
+
+  console.log("[tryResolve]", {
+    userId,
+    elapsedMs: elapsed,
+    elapsedSec: Math.round(elapsed / 1000),
+    priceAt60s: priceAt60s ?? "null",
+    direction,
+    priceAtGuess,
+  });
+
+  if (priceAt60s === null) {
+    if (elapsed >= TWO_MINUTES_MS) {
+      console.log("[tryResolve] resolving as tie (price unavailable after 2min)");
+      await clearPendingAndSetScore(userId, profile.score);
+      await upsertLeaderboardRow(userId, profile.name ?? "", profile.score);
+      await putGuessHistory(userId, {
+        direction,
+        timestamp: guessTimestamp,
+        priceAtGuess,
+        result: "tie",
+        priceAtResolution: priceAtGuess,
+        scoreAfter: profile.score,
+      });
+      const updated = await getUserById(userId);
+      return updated
+        ? {
+            profile: updated,
+            resolution: {
+              priceAtGuess,
+              priceAtResolution: priceAtGuess,
+              result: "tie",
+            },
+          }
+        : {
+            profile,
+            resolution: {
+              priceAtGuess,
+              priceAtResolution: priceAtGuess,
+              result: "tie",
+            },
+          };
+    }
+    return { profile };
+  }
 
   const changed = priceChanged(priceAt60s, priceAtGuess);
 
   if (changed) {
     const result = resolveResult(direction, priceAtGuess, priceAt60s);
+    console.log("[tryResolve] resolving win/loss", { result, priceAt60s });
     const newScore = profile.score + (result === "win" ? 1 : -1);
     await clearPendingAndSetScore(userId, newScore);
     await upsertLeaderboardRow(userId, profile.name ?? "", newScore);
@@ -97,6 +141,7 @@ export async function tryResolve(
   }
 
   if (elapsed >= TWO_MINUTES_MS) {
+    console.log("[tryResolve] resolving as tie (price unchanged at 2min)");
     await clearPendingAndSetScore(userId, profile.score);
     await upsertLeaderboardRow(userId, profile.name ?? "", profile.score);
     await putGuessHistory(userId, {
