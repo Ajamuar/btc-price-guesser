@@ -41,9 +41,12 @@ export function HistoryTab({ refetchTrigger }: HistoryTabProps) {
   }
   if (!history.length) {
     return (
-      <p className="py-4 text-sm text-muted-foreground">
-        No guesses yet. Make a guess to see your history here!
-      </p>
+      <div className="flex flex-col items-center justify-center rounded-md border border-dashed border-border/60 bg-muted/30 px-4 py-8 text-center">
+        <p className="text-sm font-medium text-foreground">No history yet</p>
+        <p className="mt-1 text-sm text-muted-foreground">
+          Make a guess to see your results here after each round.
+        </p>
+      </div>
     );
   }
 
