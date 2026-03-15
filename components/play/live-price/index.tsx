@@ -16,20 +16,20 @@ export function LivePrice({ price, loading = false, error = null }: LivePricePro
   }
   if (loading) {
     return (
-      <p className="text-lg font-medium text-muted-foreground">
+      <p className="text-base font-medium text-muted-foreground sm:text-lg">
         —
       </p>
     );
   }
   if (price === null) {
     return (
-      <p className="text-lg font-medium text-muted-foreground">
+      <p className="text-base font-medium text-muted-foreground sm:text-lg">
         —
       </p>
     );
   }
   return (
-    <p className="text-lg font-medium text-foreground">
+    <p className="text-base font-medium text-foreground sm:text-lg">
       BTC: ${price.toLocaleString("en-US", { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
     </p>
   );

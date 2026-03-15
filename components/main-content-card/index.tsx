@@ -6,7 +6,7 @@ type MainContentCardProps = {
 };
 
 const cardClasses =
-  "w-full rounded-xl border border-teal-200/60 bg-white px-8 py-10 shadow-lg sm:px-12 sm:py-16 dark:border-teal-800/50 dark:bg-card";
+  "w-full min-h-[100dvh] rounded-none border-0 shadow-none bg-white px-4 py-6 dark:bg-card md:min-h-0 md:rounded-xl md:border md:border-teal-200/60 md:shadow-lg md:px-12 md:py-16 md:dark:border-teal-800/50";
 
 export function MainContentCard({ children, className }: MainContentCardProps) {
   return <div className={cn(cardClasses, className)}>{children}</div>;

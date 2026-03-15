@@ -72,6 +72,7 @@ export function GuessButtons({
           disabled={!canSubmit}
           onClick={() => currentPrice !== null && onGuess("up", currentPrice)}
           className={cn(
+            "text-sm sm:text-base",
             selectedDirection === "up"
               ? "bg-green-600 hover:bg-green-700 text-white dark:bg-green-600 dark:hover:bg-green-700"
               : "border-green-600 text-green-600 hover:bg-green-50 dark:border-green-500 dark:text-green-400 dark:hover:bg-green-950/50"
@@ -85,6 +86,7 @@ export function GuessButtons({
           disabled={!canSubmit}
           onClick={() => currentPrice !== null && onGuess("down", currentPrice)}
           className={cn(
+            "text-sm sm:text-base",
             selectedDirection === "down"
               ? "bg-red-600 hover:bg-red-700 text-white dark:bg-red-600 dark:hover:bg-red-700"
               : "border-red-600 text-red-600 hover:bg-red-50 dark:border-red-500 dark:text-red-400 dark:hover:bg-red-950/50"

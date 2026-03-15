@@ -42,11 +42,11 @@ export function GameContainer({
 
   return (
     <div className="flex flex-col items-center gap-6 text-center">
-      <h1 className="text-2xl font-semibold tracking-tight text-foreground sm:text-3xl">
+      <h1 className="text-lg font-semibold tracking-tight text-foreground sm:text-2xl md:text-3xl">
         Hi {userDisplayName ?? "…"}, Let's Play
       </h1>
       <div className="flex w-full flex-col items-center gap-4 sm:flex-row sm:justify-center sm:gap-8">
-        <p className="text-base font-medium text-foreground">
+        <p className="text-sm font-medium text-foreground sm:text-base">
           Score: {score}
         </p>
         <LivePrice price={price} loading={loading} error={error} />
@@ -59,7 +59,7 @@ export function GameContainer({
           key={lastResult}
           className={`flex flex-col items-center gap-1 ${lastResult === "win" ? "result-celebration" : lastResult === "loss" ? "result-loss" : ""}`}
         >
-          <p className="text-base font-medium text-foreground">
+          <p className="text-sm font-medium text-foreground sm:text-base">
             {lastResult === "win" && "You won! Guess again?"}
             {lastResult === "loss" && (
               <>

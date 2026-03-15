@@ -115,12 +115,23 @@
 @layer base {
   html {
     font-size: 125%;
+    width: 100%;
+    min-width: 100vw;
+    box-sizing: border-box;
+  }
+  *,
+  *::before,
+  *::after {
+    box-sizing: inherit;
   }
   * {
     @apply border-border;
   }
   body {
     @apply bg-background text-foreground antialiased;
+    width: 100%;
+    min-width: 100vw;
+    margin: 0;
   }
 }
 
