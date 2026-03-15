@@ -23,8 +23,12 @@ function resolveResult(
   return !wentUp ? "win" : "loss";
 }
 
-function leaderboardSortKey(score: number, userId: string): string {
+function leaderboardGsiSortKey(score: number, userId: string): string {
   return `SCORE#${-score}#${userId}`;
+}
+
+function leaderboardUserSk(userId: string): string {
+  return `USER#${userId}`;
 }
 
 export type TryResolveResult = {
@@ -122,7 +126,8 @@ async function upsertLeaderboardRow(
   name: string,
   score: number
 ): Promise<void> {
-  const sk = leaderboardSortKey(score, userId);
+  const sk = leaderboardUserSk(userId);
+  const gsi1sk = leaderboardGsiSortKey(score, userId);
   await docClient.send(
     new PutCommand({
       TableName: tableName,
@@ -133,7 +138,7 @@ async function upsertLeaderboardRow(
         name: name || userId,
         score,
         gsi1pk: "LEADERBOARD#global",
-        gsi1sk: sk,
+        gsi1sk,
       },
     })
   );

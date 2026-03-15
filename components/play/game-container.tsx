@@ -1,5 +1,6 @@
 "use client";
 
+import { useEffect, useRef } from "react";
 import { LivePrice } from "@/components/play/live-price";
 import { PriceChart } from "@/components/play/price-chart";
 import { GuessButtons } from "@/components/play/guess-buttons";
@@ -10,12 +11,14 @@ type GameContainerProps = {
   userDisplayName?: string | null;
   initialScore: number;
   initialPendingGuess: PendingGuess;
+  onResolution?: () => void;
 };
 
 export function GameContainer({
   userDisplayName = null,
   initialScore,
   initialPendingGuess,
+  onResolution,
 }: GameContainerProps) {
   const { price, priceHistory, loading, error } = useBinancePrice();
   const {
@@ -28,6 +31,14 @@ export function GameContainer({
     handleGuess,
     priceAtGuess,
   } = useGamePlay({ initialScore, initialPendingGuess });
+
+  const prevLastResultRef = useRef<typeof lastResult>(null);
+  useEffect(() => {
+    if (lastResult != null && prevLastResultRef.current === null) {
+      onResolution?.();
+    }
+    prevLastResultRef.current = lastResult;
+  }, [lastResult, onResolution]);
 
   return (
     <div className="flex flex-col items-center gap-6 text-center">
