@@ -25,7 +25,7 @@ export default async function Page() {
     <div className="flex min-h-screen flex-col bg-teal-50 dark:bg-teal-950">
       <SiteHeader session={session} />
       <main className="flex flex-1 flex-col items-center justify-center px-4 py-10 sm:px-8 sm:py-16 lg:px-12 lg:py-20">
-        <PageContainer className="w-full max-w-full sm:max-w-2xl lg:max-w-4xl">
+        <PageContainer className="w-full max-w-full sm:max-w-2xl lg:max-w-5xl">
           <MainContentCard>
             <PlayContent
               userDisplayName={userDisplayName}

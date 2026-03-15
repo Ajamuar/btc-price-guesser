@@ -113,10 +113,48 @@
 }
 
 @layer base {
+  html {
+    font-size: 125%;
+  }
   * {
     @apply border-border;
   }
   body {
     @apply bg-background text-foreground antialiased;
   }
+}
+
+@keyframes result-celebration {
+  0% {
+    transform: scale(0.9);
+    opacity: 0.8;
+  }
+  50% {
+    transform: scale(1.08);
+  }
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+@keyframes result-loss {
+  0%,
+  100% {
+    transform: translateX(0);
+  }
+  25% {
+    transform: translateX(-4px);
+  }
+  75% {
+    transform: translateX(4px);
+  }
+}
+
+.result-celebration {
+  animation: result-celebration 0.4s ease-out;
+}
+
+.result-loss {
+  animation: result-loss 0.3s ease-in-out;
 }

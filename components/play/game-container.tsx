@@ -51,14 +51,21 @@ export function GameContainer({
         </p>
         <LivePrice price={price} loading={loading} error={error} />
       </div>
-      <div className="w-full">
+      <div className="w-full mb-6">
         <PriceChart data={priceHistory} priceAtGuess={priceAtGuess} />
       </div>
       {lastResult != null && (
-        <div className="flex flex-col items-center gap-1">
+        <div
+          key={lastResult}
+          className={`flex flex-col items-center gap-1 ${lastResult === "win" ? "result-celebration" : lastResult === "loss" ? "result-loss" : ""}`}
+        >
           <p className="text-base font-medium text-foreground">
             {lastResult === "win" && "You won! Guess again?"}
-            {lastResult === "loss" && "You lost. Guess again?"}
+            {lastResult === "loss" && (
+              <>
+                <span aria-hidden>😢 </span>You lost. Guess again?
+              </>
+            )}
             {lastResult === "tie" && "Tie. No change. Guess again?"}
           </p>
           {lastResolution != null && (
@@ -81,6 +88,11 @@ export function GameContainer({
       )}
       <GuessButtons
         hasPendingGuess={pendingGuess != null}
+        selectedDirection={
+          pendingGuess?.direction === "up" || pendingGuess?.direction === "down"
+            ? pendingGuess.direction
+            : null
+        }
         onGuess={handleGuess}
         currentPrice={price}
         loading={guessLoading}

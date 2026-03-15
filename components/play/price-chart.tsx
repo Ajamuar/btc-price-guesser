@@ -30,15 +30,17 @@ function formatRelative(msAgo: number): string {
 
 function formatPrice(value: number): string {
   if (value >= 1000) {
-    return `${(value / 1000).toFixed(1)}k`;
+    return `${(value / 1000).toFixed(2)}k`;
   }
   return value.toFixed(2);
 }
 
 export function PriceChart({ data, priceAtGuess = null }: PriceChartProps) {
+  const chartHeight = 300;
+
   if (data.length === 0) {
     return (
-      <div className="w-full min-h-[200px] rounded-md border border-border bg-muted/30 flex items-center justify-center">
+      <div className="w-full min-h-[300px] rounded-md border border-border bg-muted/30 flex items-center justify-center">
         <p className="text-sm text-muted-foreground">
           Connecting… price chart will appear when data is available.
         </p>
@@ -60,28 +62,41 @@ export function PriceChart({ data, priceAtGuess = null }: PriceChartProps) {
   const yPadding = Math.max((yMax - yMin) * 0.01, 10);
   const yDomain = [yMin - yPadding, yMax + yPadding] as [number, number];
 
+  const twentySecondsMs = 20_000;
+  const ticks: number[] = [];
+  for (let t = domainStart; t <= latestTimestamp; t += twentySecondsMs) {
+    ticks.push(t);
+  }
+  if (ticks.length === 0 || ticks[ticks.length - 1] !== latestTimestamp) {
+    ticks.push(latestTimestamp);
+  }
+
   return (
-    <div className="w-full min-h-[200px] rounded-md border border-border bg-muted/30 p-2">
-      <ResponsiveContainer width="100%" height={200}>
+    <div className="w-full min-h-[300px] rounded-md border border-border bg-muted/30 p-2">
+      <ResponsiveContainer width="100%" height={chartHeight}>
         <LineChart
           data={data}
           margin={{ top: 5, right: 10, left: 10, bottom: 5 }}
         >
           <CartesianGrid strokeDasharray="3 3" className="stroke-border/50" />
           <XAxis
+            type="number"
             dataKey="timestamp"
             domain={[domainStart, latestTimestamp]}
+            ticks={ticks}
             tickFormatter={(ts: number) => formatRelative(latestTimestamp - ts)}
             tick={{ fontSize: 11, fill: "var(--muted-foreground)" }}
             stroke="var(--border)"
           />
           <YAxis
+            type="number"
             dataKey="price"
             tickFormatter={formatPrice}
             tick={{ fontSize: 11, fill: "var(--muted-foreground)" }}
             stroke="var(--border)"
             domain={yDomain}
             width={50}
+            tickCount={5}
           />
           <Tooltip
             formatter={(value: unknown) => [
