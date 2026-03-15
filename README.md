@@ -1,36 +1,119 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# BTC Price Guesser
 
-## Getting Started
+Guess if Bitcoin (BTC/USD) goes **up** or **down** after one minute. Sign in to play and track your score.
 
-First, run the development server:
+**Live app:** [https://btc-price-guesser.vercel.app/](https://btc-price-guesser.vercel.app/)
+
+---
+
+## About the game
+
+BTC Price Guesser is a web app where signed-in users guess whether the market price of Bitcoin will be higher or lower one minute after placing their guess. You see your current score and the latest BTC price at all times. After each guess, you wait for it to resolve before making another; your score updates and persists so you can close the browser and return later.
+
+**Flow:** Land on the home page (rules + Play) → sign in with Google or email/password → open the Play page with live price, chart, score, and **Up** / **Down** buttons. Submit one guess at a time; when it resolves, you get feedback (win/loss/tie) and can guess again. Leaderboard and History tabs on the play screen let you see top players and your past guesses.
+
+---
+
+## Rules
+
+- **Guess:** Choose **up** or **down** — you're predicting whether the price will be higher or lower **after 1 minute**.
+- **Resolution:**
+  - If **at least 60 seconds** have passed **and** the price has **changed** from the price at guess time → the guess is resolved as **win** or **loss**.
+  - If the price has **not** changed by **2 minutes** → the guess is resolved as a **tie**.
+- **Scoring:** Correct guess **+1**, wrong guess **-1**, tie **0**. New players start at 0. Score is saved per account.
+- **One guess at a time:** You cannot submit a new guess until the current one is resolved.
+- **Sign in required** to play; score and history are tied to your account.
+
+---
+
+## Demo
+
+A short walkthrough of the game: home page, sign-in, play screen with live price and chart, placing a guess, and resolution.
+
+**Demo video**
+
+<!-- Replace the link below with your demo video URL (e.g. Loom, YouTube, Vimeo) -->
+*Add your demo video link or embed here.*
+
+---
+
+## Tech stack
+
+| Area | Technologies |
+|------|--------------|
+| **Frontend** | Next.js 16 (App Router), React 19, Tailwind CSS 4, Radix UI, Recharts |
+| **Backend / API** | Next.js API routes, NextAuth (Google + Credentials) |
+| **Data** | AWS DynamoDB (profiles, scores, pending guesses, leaderboard, guess history); AWS SDK v3 |
+| **Price data** | Binance Spot (BTCUSDT) for live and historical price; optional Lambda proxy when Binance blocks server IPs |
+| **Testing** | Jest (unit), Playwright (E2E) |
+| **Deploy** | Vercel; see [docs/DEPLOYMENT.md](docs/DEPLOYMENT.md) for full checklist |
+
+---
+
+## Run locally
+
+### Prerequisites
+
+- **Node.js** 18+ (or the version your project supports)
+- **npm** or **yarn**
+- **AWS DynamoDB** table created (see [docs/phase-1/PHASE_1_DYNAMODB.md](docs/phase-1/PHASE_1_DYNAMODB.md) for schema and GSI)
+
+### 1. Clone and install
+
+```bash
+git clone <your-repo-url>
+cd btc-price-guesser
+npm install
+```
+
+### 2. Environment variables
+
+Copy `.env.example` to `.env.local` and fill in values (never commit `.env.local`):
+
+| Variable | Description |
+|----------|-------------|
+| `AWS_REGION` | AWS region of your DynamoDB table (e.g. `ap-south-1`, `us-east-1`) |
+| `AWS_ACCESS_KEY_ID` | IAM access key for DynamoDB |
+| `AWS_SECRET_ACCESS_KEY` | IAM secret key |
+| `DYNAMODB_TABLE_NAME` | Table name (e.g. `btc-guesser`) |
+| `NEXTAUTH_URL` | App URL for local: `http://localhost:3000` |
+| `NEXTAUTH_SECRET` | Random secret, 32+ characters (e.g. `openssl rand -base64 32`) |
+| `GOOGLE_CLIENT_ID` / `GOOGLE_CLIENT_SECRET` | Optional for local; required for “Sign in with Google” |
+| `E2E_TEST_USER_EMAIL` / `E2E_TEST_USER_PASSWORD` | Optional; for Playwright authenticated E2E tests |
+| `BINANCE_KLINES_PROXY_URL` | Optional; Lambda proxy URL if Binance blocks direct requests |
+
+### 3. Run the app
+
+**Development:**
 
 ```bash
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Open [http://localhost:3000](http://localhost:3000).
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+**Production build:**
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+```bash
+npm run build
+npm run start
+```
 
-## Learn More
+**Lint:**
 
-To learn more about Next.js, take a look at the following resources:
+```bash
+npm run lint
+```
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+**Tests:**
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+```bash
+npm test              # unit tests (Jest)
+npm run e2e           # E2E (Playwright; uses .env.local, optional E2E credentials)
+```
 
-## Deploy on Vercel
+---
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+## Deployment
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+For deploying to Vercel and configuring AWS (DynamoDB, IAM), Google OAuth, and environment variables, see **[docs/DEPLOYMENT.md](docs/DEPLOYMENT.md)**.
