@@ -2,6 +2,7 @@ import { getServerSession } from "next-auth";
 import { authOptions } from "@/lib/auth";
 import { SiteHeader } from "@/components/site-header";
 import { PageContainer } from "@/components/page-container";
+import { MainContentCard } from "@/components/main-content-card";
 import { SignInForm } from "@/components/auth/sign-in-form";
 
 type Props = {
@@ -15,16 +16,16 @@ export default async function SignInPage({ searchParams }: Props) {
   return (
     <div className="flex min-h-screen flex-col bg-teal-50 dark:bg-teal-950">
       <SiteHeader session={session} />
-      <main className="flex flex-1 flex-col items-center justify-center px-4 py-10 sm:px-8 sm:py-16 lg:px-12 lg:py-20">
-        <PageContainer className="w-full max-w-full sm:max-w-2xl lg:max-w-3xl">
-          <div className="w-full rounded-xl border border-teal-200/60 bg-white px-8 py-10 shadow-lg sm:px-12 sm:py-14 dark:border-teal-800/50 dark:bg-card">
-            <div className="flex flex-col items-center gap-6 text-center">
-              <h1 className="text-2xl font-semibold tracking-tight text-foreground sm:text-3xl">
+      <main className="flex min-h-0 flex-1 flex-col items-center justify-center px-0 py-0 sm:px-8 sm:py-16 lg:px-12 lg:py-20">
+        <PageContainer className="flex min-h-0 w-full max-w-full flex-1 flex-col px-0 sm:max-w-2xl sm:px-6 lg:max-w-3xl lg:px-8">
+          <MainContentCard>
+            <div className="flex flex-1 flex-col items-center justify-center gap-6 text-center">
+              <h1 className="text-lg font-semibold tracking-tight text-foreground sm:text-2xl md:text-3xl">
                 Sign in
               </h1>
               <SignInForm callbackUrl={callbackUrl ?? "/"} />
             </div>
-          </div>
+          </MainContentCard>
         </PageContainer>
       </main>
     </div>

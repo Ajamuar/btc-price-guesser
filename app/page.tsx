@@ -14,15 +14,15 @@ export default async function Home() {
   return (
     <div className="flex min-h-screen flex-col bg-teal-50 dark:bg-teal-950">
       <SiteHeader session={session} />
-      <main className="flex flex-1 flex-col items-center justify-center px-4 py-10 sm:px-8 sm:py-16 lg:px-12 lg:py-20">
-        <PageContainer className="w-full max-w-full sm:max-w-2xl lg:max-w-3xl">
+      <main className="flex min-h-0 flex-1 flex-col items-center justify-center px-0 py-0 sm:px-8 sm:py-16 lg:px-12 lg:py-20">
+        <PageContainer className="flex min-h-0 w-full max-w-full flex-1 flex-col px-0 sm:max-w-2xl sm:px-6 lg:max-w-3xl lg:px-8">
           <MainContentCard>
-            <div className="flex flex-col items-center gap-6">
+            <div className="flex flex-1 flex-col items-center justify-center gap-6">
               <GameRulesCard />
               <Button
                 asChild
                 size="lg"
-                className="w-full min-h-12 sm:w-auto sm:min-h-11 bg-teal-600 text-white shadow-md no-underline hover:bg-teal-700 hover:text-white focus-visible:ring-teal-400 focus-visible:ring-offset-2 focus-visible:ring-offset-teal-50 dark:focus-visible:ring-teal-400 dark:focus-visible:ring-offset-teal-950"
+                className="w-full min-h-12 text-sm sm:w-auto sm:min-h-11 sm:text-base bg-teal-600 text-white shadow-md no-underline hover:bg-teal-700 hover:text-white focus-visible:ring-teal-400 focus-visible:ring-offset-2 focus-visible:ring-offset-teal-50 dark:focus-visible:ring-teal-400 dark:focus-visible:ring-offset-teal-950"
               >
                 <Link href={playHref} className="no-underline">Play</Link>
               </Button>
