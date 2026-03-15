@@ -72,7 +72,10 @@ export function HistoryTab({ refetchTrigger }: HistoryTabProps) {
             </span>
           </div>
           <p className="mt-0.5 text-muted-foreground">
-            ${formatPrice(item.priceAtGuess)} → ${formatPrice(item.priceAtResolution)} · Score after: {item.scoreAfter}
+            ${formatPrice(item.priceAtGuess)} → ${formatPrice(item.priceAtResolution)}
+          </p>
+          <p className="mt-0.5 text-muted-foreground">
+            Score after: {item.scoreAfter}
           </p>
           <p className="text-xs text-muted-foreground">{formatTime(item.timestamp)}</p>
         </li>

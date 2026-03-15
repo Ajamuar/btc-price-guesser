@@ -19,10 +19,10 @@ export function PlayTabs({ currentUserId, refetchTrigger }: PlayTabsProps) {
         <TabsTrigger value="leaderboard">Leaderboard</TabsTrigger>
         <TabsTrigger value="history">History</TabsTrigger>
       </TabsList>
-      <TabsContent value="leaderboard" className="min-h-[200px] max-h-[min(50vh,24rem)] overflow-y-auto">
+      <TabsContent value="leaderboard" className="min-h-[200px] max-h-[min(55vh,26rem)] overflow-y-auto">
         <LeaderboardTab currentUserId={currentUserId} refetchTrigger={refetchTrigger} />
       </TabsContent>
-      <TabsContent value="history" className="min-h-[200px] max-h-[min(50vh,24rem)] overflow-y-auto">
+      <TabsContent value="history" className="min-h-[200px] max-h-[min(55vh,26rem)] overflow-y-auto">
         <HistoryTab refetchTrigger={refetchTrigger} />
       </TabsContent>
     </Tabs>
