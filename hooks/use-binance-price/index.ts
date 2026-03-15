@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
+import { getWebSocketConstructor } from "@/lib/browser-websocket";
 
 const WS_URL = "wss://stream.binance.com:9443/ws/btcusdt@trade";
 const CHART_INTERVAL_MS = 1000;
@@ -30,11 +31,13 @@ export function useBinancePrice() {
   const maxReconnectAttempts = 5;
 
   useEffect(() => {
+    const WebSocketCtor = getWebSocketConstructor();
+
     function connect() {
-      if (wsRef.current?.readyState === WebSocket.OPEN) return;
+      if (wsRef.current?.readyState === WebSocketCtor.OPEN) return;
 
       setError(null);
-      const ws = new WebSocket(WS_URL);
+      const ws = new WebSocketCtor(WS_URL);
       wsRef.current = ws;
 
       ws.onopen = () => {
