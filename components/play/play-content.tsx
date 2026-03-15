@@ -25,7 +25,7 @@ export function PlayContent({
 
   return (
     <div className="flex flex-col gap-6 lg:flex-row lg:items-start lg:gap-8">
-      <div className="w-full flex-1 rounded-xl border border-teal-200/60 bg-white px-8 py-10 shadow-lg sm:px-12 sm:py-14 dark:border-teal-800/50 dark:bg-card">
+      <div className="w-full flex-1 px-4 py-4 sm:px-6 sm:py-6">
         <GameContainer
           userDisplayName={userDisplayName}
           initialScore={initialScore}
@@ -33,7 +33,7 @@ export function PlayContent({
           onResolution={onResolution}
         />
       </div>
-      <div className="w-full shrink-0 rounded-xl border border-teal-200/60 bg-white px-4 py-4 shadow-lg dark:border-teal-800/50 dark:bg-card lg:w-80">
+      <div className="w-full shrink-0 border-t border-border/60 px-4 py-4 lg:w-80 lg:border-t-0 lg:border-l lg:border-border/60 lg:pl-8 lg:pr-4">
         <PlayTabs currentUserId={currentUserId} refetchTrigger={refetchTrigger} />
       </div>
     </div>

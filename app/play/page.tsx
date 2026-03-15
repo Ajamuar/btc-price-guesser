@@ -4,6 +4,7 @@ import { authOptions } from "@/lib/auth";
 import { getUserById } from "@/lib/user";
 import { SiteHeader } from "@/components/site-header";
 import { PageContainer } from "@/components/page-container";
+import { MainContentCard } from "@/components/main-content-card";
 import { PlayContent } from "@/components/play/play-content";
 
 export default async function Page() {
@@ -25,12 +26,14 @@ export default async function Page() {
       <SiteHeader session={session} />
       <main className="flex flex-1 flex-col items-center justify-center px-4 py-10 sm:px-8 sm:py-16 lg:px-12 lg:py-20">
         <PageContainer className="w-full max-w-full sm:max-w-2xl lg:max-w-4xl">
-          <PlayContent
-            userDisplayName={userDisplayName}
-            initialScore={profile.score}
-            initialPendingGuess={profile.pendingGuess}
-            currentUserId={session.user.id}
-          />
+          <MainContentCard>
+            <PlayContent
+              userDisplayName={userDisplayName}
+              initialScore={profile.score}
+              initialPendingGuess={profile.pendingGuess}
+              currentUserId={session.user.id}
+            />
+          </MainContentCard>
         </PageContainer>
       </main>
     </div>
