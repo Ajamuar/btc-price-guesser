@@ -18,7 +18,7 @@ describe("MainContentCard", () => {
       </MainContentCard>
     );
     const wrapper = container.firstChild;
-    expect(wrapper).toHaveClass("rounded-xl", "border", "w-full");
+    expect(wrapper).toHaveClass("w-full", "rounded-none", "border-0", "md:rounded-xl");
   });
 
   it("merges custom className", () => {

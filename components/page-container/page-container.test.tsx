@@ -18,7 +18,7 @@ describe("PageContainer", () => {
       </PageContainer>
     );
     const wrapper = container.firstChild;
-    expect(wrapper).toHaveClass("mx-auto", "max-w-2xl", "px-4");
+    expect(wrapper).toHaveClass("mx-auto", "w-full", "max-w-2xl", "px-0");
   });
 
   it("merges custom className", () => {
