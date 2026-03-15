@@ -21,7 +21,13 @@ export async function GET() {
     );
   }
 
-  let resolution: { priceAtGuess: number; priceAtResolution: number } | undefined;
+  let resolution:
+    | {
+        priceAtGuess: number;
+        priceAtResolution: number;
+        result: "win" | "loss" | "tie";
+      }
+    | undefined;
   if (profile.pendingGuess != null) {
     const result = await tryResolve(session.user.id);
     if (result) {
@@ -34,7 +40,11 @@ export async function GET() {
     user: { id: string; email: string | null; name: string | null };
     score: number;
     pendingGuess: typeof profile.pendingGuess;
-    resolution?: { priceAtGuess: number; priceAtResolution: number };
+    resolution?: {
+      priceAtGuess: number;
+      priceAtResolution: number;
+      result: "win" | "loss" | "tie";
+    };
   } = {
     user: {
       id: profile.userId,

@@ -33,7 +33,11 @@ function leaderboardUserSk(userId: string): string {
 
 export type TryResolveResult = {
   profile: UserProfile;
-  resolution?: { priceAtGuess: number; priceAtResolution: number };
+  resolution?: {
+    priceAtGuess: number;
+    priceAtResolution: number;
+    result: "win" | "loss" | "tie";
+  };
 };
 
 /**
@@ -76,9 +80,20 @@ export async function tryResolve(
     return updated
       ? {
           profile: updated,
-          resolution: { priceAtGuess, priceAtResolution: priceAt60s },
+          resolution: {
+            priceAtGuess,
+            priceAtResolution: priceAt60s,
+            result,
+          },
         }
-      : { profile, resolution: { priceAtGuess, priceAtResolution: priceAt60s } };
+      : {
+          profile,
+          resolution: {
+            priceAtGuess,
+            priceAtResolution: priceAt60s,
+            result,
+          },
+        };
   }
 
   if (elapsed >= TWO_MINUTES_MS) {
@@ -96,9 +111,20 @@ export async function tryResolve(
     return updated
       ? {
           profile: updated,
-          resolution: { priceAtGuess, priceAtResolution: priceAt60s },
+          resolution: {
+            priceAtGuess,
+            priceAtResolution: priceAt60s,
+            result: "tie",
+          },
         }
-      : { profile, resolution: { priceAtGuess, priceAtResolution: priceAt60s } };
+      : {
+          profile,
+          resolution: {
+            priceAtGuess,
+            priceAtResolution: priceAt60s,
+            result: "tie",
+          },
+        };
   }
 
   return { profile };

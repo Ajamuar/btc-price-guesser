@@ -67,7 +67,7 @@ export function useGamePlay({
             ? (JSON.parse(text) as {
                 score?: number;
                 pendingGuess?: PendingGuess;
-                resolution?: Resolution;
+                resolution?: Resolution & { result?: "win" | "loss" | "tie" };
               })
             : {};
           const newScore = data.score ?? scoreRef.current;
@@ -78,11 +78,20 @@ export function useGamePlay({
               clearInterval(intervalIdRef.current);
               intervalIdRef.current = null;
             }
-            const prevScore = scoreRef.current;
-            if (newScore > prevScore) setLastResult("win");
-            else if (newScore < prevScore) setLastResult("loss");
-            else setLastResult("tie");
-            if (data.resolution) setLastResolution(data.resolution);
+            if (data.resolution) {
+              setLastResolution({
+                priceAtGuess: data.resolution.priceAtGuess,
+                priceAtResolution: data.resolution.priceAtResolution,
+              });
+              setLastResult(
+                data.resolution.result ??
+                  (newScore > scoreRef.current
+                    ? "win"
+                    : newScore < scoreRef.current
+                      ? "loss"
+                      : "tie")
+              );
+            }
           }
 
           setScore(newScore);
