@@ -3,7 +3,7 @@
 import { useEffect, useRef, useState } from "react";
 
 const WS_URL = "wss://stream.binance.com:9443/ws/btcusdt@trade";
-const CHART_INTERVAL_MS = 5000;
+const CHART_INTERVAL_MS = 1000;
 const WINDOW_MS = 2 * 60 * 1000; // 2 minutes
 
 type PricePoint = { timestamp: number; price: number };

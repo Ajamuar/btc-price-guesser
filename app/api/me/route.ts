@@ -1,6 +1,7 @@
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/lib/auth";
 import { getUserById } from "@/lib/user";
+import { tryResolve } from "@/lib/guess";
 import { NextResponse } from "next/server";
 
 export async function GET() {
@@ -12,7 +13,7 @@ export async function GET() {
     );
   }
 
-  const profile = await getUserById(session.user.id);
+  let profile = await getUserById(session.user.id);
   if (!profile) {
     return NextResponse.json(
       { error: "Unauthorized" },
@@ -20,7 +21,21 @@ export async function GET() {
     );
   }
 
-  return NextResponse.json({
+  let resolution: { priceAtGuess: number; priceAtResolution: number } | undefined;
+  if (profile.pendingGuess != null) {
+    const result = await tryResolve(session.user.id);
+    if (result) {
+      profile = result.profile;
+      resolution = result.resolution;
+    }
+  }
+
+  const body: {
+    user: { id: string; email: string | null; name: string | null };
+    score: number;
+    pendingGuess: typeof profile.pendingGuess;
+    resolution?: { priceAtGuess: number; priceAtResolution: number };
+  } = {
     user: {
       id: profile.userId,
       email: profile.email,
@@ -28,5 +43,8 @@ export async function GET() {
     },
     score: profile.score,
     pendingGuess: profile.pendingGuess,
-  });
+  };
+  if (resolution) body.resolution = resolution;
+
+  return NextResponse.json(body);
 }

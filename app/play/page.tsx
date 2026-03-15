@@ -6,7 +6,7 @@ import { SiteHeader } from "@/components/site-header";
 import { PageContainer } from "@/components/page-container";
 import { GameContainer } from "@/components/play/game-container";
 
-export default async function PlayPage() {
+export default async function Page() {
   const session = await getServerSession(authOptions);
   if (!session?.user?.id) {
     redirect("/auth/signin?callbackUrl=/play");

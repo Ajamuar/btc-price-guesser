@@ -8,6 +8,7 @@ import {
   YAxis,
   Tooltip,
   CartesianGrid,
+  ReferenceLine,
 } from "recharts";
 
 export type PricePoint = {
@@ -49,6 +50,16 @@ export function PriceChart({ data, priceAtGuess = null }: PriceChartProps) {
   const twoMinutesMs = 2 * 60 * 1000;
   const domainStart = latestTimestamp - twoMinutesMs;
 
+  const prices = data.map((d) => d.price);
+  const dataMin = Math.min(...prices);
+  const dataMax = Math.max(...prices);
+  const yMin =
+    priceAtGuess != null ? Math.min(dataMin, priceAtGuess) : dataMin;
+  const yMax =
+    priceAtGuess != null ? Math.max(dataMax, priceAtGuess) : dataMax;
+  const yPadding = Math.max((yMax - yMin) * 0.01, 10);
+  const yDomain = [yMin - yPadding, yMax + yPadding] as [number, number];
+
   return (
     <div className="w-full min-h-[200px] rounded-md border border-border bg-muted/30 p-2">
       <ResponsiveContainer width="100%" height={200}>
@@ -69,7 +80,7 @@ export function PriceChart({ data, priceAtGuess = null }: PriceChartProps) {
             tickFormatter={formatPrice}
             tick={{ fontSize: 11, fill: "var(--muted-foreground)" }}
             stroke="var(--border)"
-            domain={["auto", "auto"]}
+            domain={yDomain}
             width={50}
           />
           <Tooltip
@@ -92,11 +103,25 @@ export function PriceChart({ data, priceAtGuess = null }: PriceChartProps) {
             dot={false}
             isAnimationActive={false}
           />
+          {priceAtGuess != null && (
+            <ReferenceLine
+              y={priceAtGuess}
+              stroke="var(--primary)"
+              strokeDasharray="4 4"
+              strokeWidth={1.5}
+              label={{
+                value: "Guess",
+                position: "right",
+                fill: "var(--muted-foreground)",
+                fontSize: 11,
+              }}
+            />
+          )}
         </LineChart>
       </ResponsiveContainer>
       {priceAtGuess != null && (
         <p className="text-xs text-muted-foreground mt-1 text-center">
-          Variance from guess (${priceAtGuess.toLocaleString()}) in Phase 3 Step 7
+          Guess price: ${priceAtGuess.toLocaleString("en-US", { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
         </p>
       )}
     </div>

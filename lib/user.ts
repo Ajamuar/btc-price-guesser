@@ -60,8 +60,10 @@ export async function setPendingGuess(
           timestamp,
           priceAtGuess,
         },
+        ":n": null,
       },
-      ConditionExpression: "attribute_not_exists(pendingGuess)",
+      ConditionExpression:
+        "attribute_not_exists(pendingGuess) OR pendingGuess = :n",
     })
   );
 }

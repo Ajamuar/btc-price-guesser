@@ -1,5 +1,4 @@
 /**
- * Server-side Binance helpers for resolution (Phase 4).
  * Uses historical klines so resolution uses price at the correct moment (e.g. 60s after guess).
  */
 
