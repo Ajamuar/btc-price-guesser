@@ -127,4 +127,14 @@ test.describe("Play page (authenticated)", () => {
     const chart = page.locator("[class*='recharts']").first();
     await expect(chart).toBeVisible({ timeout: 15_000 });
   });
+
+  test("can submit a guess and see waiting state", async ({
+    page,
+  }: { page: Page }) => {
+    await page.goto("/play");
+    const upButton = page.getByRole("button", { name: "Up" });
+    await expect(upButton).toBeEnabled();
+    await upButton.click();
+    await expect(upButton).toBeDisabled();
+  });
 });
