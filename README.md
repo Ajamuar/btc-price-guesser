@@ -26,17 +26,6 @@ BTC Price Guesser is a web app where signed-in users guess whether the market pr
 
 ---
 
-## Demo
-
-A short walkthrough of the game: home page, sign-in, play screen with live price and chart, placing a guess, and resolution.
-
-**Demo video**
-
-<!-- Replace the link below with your demo video URL (e.g. Loom, YouTube, Vimeo) -->
-*Add your demo video link or embed here.*
-
----
-
 ## Tech stack
 
 | Area | Technologies |
