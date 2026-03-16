@@ -23,8 +23,8 @@ export default async function Page() {
   return (
     <div className="flex min-h-screen w-full flex-col bg-teal-50 dark:bg-teal-950">
       <SiteHeader session={session} />
-      <main className="flex w-full flex-1 flex-col p-0 md:flex-row md:items-center md:justify-center md:px-8 md:py-16 lg:px-12 lg:py-20">
-        <div className="w-full md:mx-auto md:max-w-2xl md:px-6 lg:max-w-5xl lg:px-8">
+      <main className="flex min-h-0 flex-1 flex-col items-center justify-center px-0 py-0 sm:px-8 sm:py-16 lg:px-12 lg:py-20">
+        <div className="w-full max-w-full flex-1 px-0 sm:max-w-2xl sm:px-6 lg:max-w-5xl lg:px-8">
           <MainContentCard>
             <PlayContent
               userDisplayName={userDisplayName}
