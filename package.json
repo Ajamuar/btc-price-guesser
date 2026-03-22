@@ -10,7 +10,8 @@
     "test": "jest",
     "test:watch": "jest --watch",
     "e2e": "dotenv -e .env.local -- playwright test",
-    "e2e:ui": "dotenv -e .env.local -- playwright test --ui"
+    "e2e:ui": "dotenv -e .env.local -- playwright test --ui",
+    "e2e:visual": "dotenv -e .env.local -- playwright test --headed"
   },
   "dependencies": {
     "@aws-sdk/client-dynamodb": "^3.1009.0",
