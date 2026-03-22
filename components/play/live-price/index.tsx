@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import { useLocale, useTranslations } from "next-intl";
 
-const ANNOUNCE_DEBOUNCE_MS = 2000;
+const ANNOUNCE_DEBOUNCE_MS = 5000;
 
 type LivePriceProps = {
   price: number | null;
