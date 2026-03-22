@@ -18,8 +18,8 @@ describe("GuessButtons", () => {
         currentPrice={71000}
       />
     );
-    expect(screen.getByRole("button", { name: /Up/i })).toBeInTheDocument();
-    expect(screen.getByRole("button", { name: /Down/i })).toBeInTheDocument();
+    expect(screen.getByText("Up")).toBeInTheDocument();
+    expect(screen.getByText("Down")).toBeInTheDocument();
   });
 
   it("disables buttons when hasPendingGuess is true", () => {
@@ -31,8 +31,8 @@ describe("GuessButtons", () => {
         currentPrice={71000}
       />
     );
-    expect(screen.getByRole("button", { name: /Up/i })).toBeDisabled();
-    expect(screen.getByRole("button", { name: /Down/i })).toBeDisabled();
+    expect(screen.getByText("Up").closest("button")).toBeDisabled();
+    expect(screen.getByText("Down").closest("button")).toBeDisabled();
   });
 
   it("calls onGuess with up and price when Up is clicked", async () => {
@@ -45,7 +45,7 @@ describe("GuessButtons", () => {
         currentPrice={71500}
       />
     );
-    await user.click(screen.getByRole("button", { name: /Up/i }));
+    await user.click(screen.getByText("Up"));
     expect(onGuess).toHaveBeenCalledWith("up", 71500);
   });
 
@@ -59,7 +59,7 @@ describe("GuessButtons", () => {
         currentPrice={71000}
       />
     );
-    await user.click(screen.getByRole("button", { name: /Down/i }));
+    await user.click(screen.getByText("Down"));
     expect(onGuess).toHaveBeenCalledWith("down", 71000);
   });
 });

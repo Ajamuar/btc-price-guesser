@@ -1,0 +1,125 @@
+{
+  "Metadata": {
+    "title": "BTC Price Guesser",
+    "description": "Guess if BTC goes up or down after 1 minute. Sign in to play."
+  },
+  "Home": {
+    "play": "Play"
+  },
+  "GameRules": {
+    "title": "BTC Price Guesser",
+    "rulesHeading": "Rules:",
+    "ruleGuess": "Guess if BTC goes up or down after 1 minute.",
+    "ruleResolution": "Resolution: 60s if price changed; otherwise tie at 2 minutes.",
+    "ruleScore": "Score: +1 correct, -1 wrong, 0 tie. One guess at a time.",
+    "ruleSignIn": "Sign in to play."
+  },
+  "SiteHeader": {
+    "appName": "BTC Price Guesser",
+    "signIn": "Sign in",
+    "signOut": "Sign out"
+  },
+  "Auth": {
+    "signInTitle": "Sign in",
+    "signUpTitle": "Sign up",
+    "signOutTitle": "Sign out",
+    "signOutConfirm": "Are you sure you want to sign out?"
+  },
+  "SignInForm": {
+    "loading": "Loading…",
+    "signInWithGoogle": "Sign in with Google",
+    "divider": "or",
+    "email": "Email",
+    "password": "Password",
+    "emailPlaceholder": "you@example.com",
+    "submit": "Sign in",
+    "noAccount": "Don't have an account?",
+    "signUp": "Sign up"
+  },
+  "SignUpForm": {
+    "loading": "Loading…",
+    "email": "Email",
+    "password": "Password",
+    "passwordHint": "At least 8 characters",
+    "name": "Name",
+    "nameOptional": "(optional)",
+    "namePlaceholder": "Your name",
+    "emailPlaceholder": "you@example.com",
+    "submit": "Create account",
+    "submitting": "Creating account…",
+    "hasAccount": "Already have an account?",
+    "signIn": "Sign in",
+    "errorEmailTaken": "Email already registered",
+    "errorInvalid": "Invalid input",
+    "errorGeneric": "Something went wrong. Please try again."
+  },
+  "SignOutActions": {
+    "signOut": "Sign out",
+    "cancel": "Cancel"
+  },
+  "Game": {
+    "greeting": "Hi {name}, Let's Play",
+    "anonymous": "…",
+    "signedInFallback": "Signed in",
+    "score": "Score: {score}",
+    "resultWin": "You won! Guess again?",
+    "resultLoss": "You lost. Guess again?",
+    "resultTie": "Tie. No change. Guess again?",
+    "resolutionDetail": "You guessed {guessed}, actual price was {actual}",
+    "nextCheck": "Next check in {seconds}s",
+    "checkingResult": "Checking for result"
+  },
+  "GuessButtons": {
+    "up": "Up",
+    "down": "Down",
+    "upAria": "Guess price will go up",
+    "downAria": "Guess price will go down",
+    "submitting": "Submitting…",
+    "waiting0": "Waiting for the deed to happen",
+    "waiting1": "Awaiting your fortune to change",
+    "waiting2": "Lights, camera and money!",
+    "waiting3": "Best poker is a poker face",
+    "waiting4": "Life is a rollercoaster that goes up or down",
+    "waiting5": "Bitcoin making nerds richer since 2009 - Unknown",
+    "waiting6": "If you want proof bitcoin is real and they work, send them to me and I will use and show you",
+    "waiting7": "Keep calm and make more guesses"
+  },
+  "LivePrice": {
+    "connecting": "Connecting…",
+    "btcPrice": "BTC: {price}"
+  },
+  "PriceChart": {
+    "empty": "Connecting… price chart will appear when data is available.",
+    "tooltipPrice": "Price",
+    "guessLabel": "Guess",
+    "guessPriceLine": "Guess price: {price}",
+    "now": "now",
+    "minusSeconds": "-{sec}s"
+  },
+  "PlayTabs": {
+    "leaderboard": "Leaderboard",
+    "history": "History"
+  },
+  "Leaderboard": {
+    "loading": "Loading leaderboard…",
+    "empty": "No scores yet. Make a guess to join the board!",
+    "you": "(you)"
+  },
+  "History": {
+    "loading": "Loading history…",
+    "emptyTitle": "No history yet",
+    "emptyHint": "Make a guess to see your results here after each round.",
+    "directionUp": "up",
+    "directionDown": "down",
+    "resultWin": "Win",
+    "resultLoss": "Loss",
+    "resultTie": "Tie",
+    "priceArrow": "{from} → {to}",
+    "scoreAfter": "Score after: {score}"
+  },
+  "GuessButtonsPlaceholder": {
+    "up": "Up",
+    "down": "Down",
+    "hint": "Guess in Phase 4"
+  }
+}

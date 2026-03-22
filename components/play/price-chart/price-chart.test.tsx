@@ -26,6 +26,7 @@ describe("PriceChart", () => {
       { timestamp: Date.now(), price: 71100 },
     ];
     render(<PriceChart data={data} priceAtGuess={71050} />);
-    expect(screen.getByText(/Guess price: \$71,050\.00/)).toBeInTheDocument();
+    expect(screen.getByText(/Guess price:/)).toBeInTheDocument();
+    expect(screen.getByText(/\$71,050\.00/)).toBeInTheDocument();
   });
 });

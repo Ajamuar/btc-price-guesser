@@ -1,37 +1,50 @@
 "use client";
 
+import { useLocale, useTranslations } from "next-intl";
 import { useHistory } from "@/hooks/use-history";
-
-function formatTime(timestamp: number): string {
-  try {
-    return new Date(timestamp).toLocaleString(undefined, {
-      month: "short",
-      day: "numeric",
-      hour: "numeric",
-      minute: "2-digit",
-    });
-  } catch {
-    return "";
-  }
-}
-
-function formatPrice(n: number): string {
-  return n.toLocaleString("en-US", {
-    minimumFractionDigits: 0,
-    maximumFractionDigits: 0,
-  });
-}
 
 type HistoryTabProps = {
   refetchTrigger?: number;
 };
 
 export function HistoryTab({ refetchTrigger }: HistoryTabProps) {
+  const locale = useLocale();
+  const t = useTranslations("History");
   const { history, loading, error } = useHistory(50, refetchTrigger);
+
+  function formatTime(timestamp: number): string {
+    try {
+      return new Intl.DateTimeFormat(locale, {
+        month: "short",
+        day: "numeric",
+        hour: "numeric",
+        minute: "2-digit",
+      }).format(new Date(timestamp));
+    } catch {
+      return "";
+    }
+  }
+
+  function formatPrice(n: number): string {
+    return new Intl.NumberFormat(locale, {
+      minimumFractionDigits: 0,
+      maximumFractionDigits: 0,
+    }).format(n);
+  }
+
+  function directionLabel(direction: string): string {
+    return direction === "up" ? t("directionUp") : t("directionDown");
+  }
+
+  function resultLabel(result: string): string {
+    if (result === "win") return t("resultWin");
+    if (result === "loss") return t("resultLoss");
+    return t("resultTie");
+  }
 
   if (loading) {
     return (
-      <p className="py-4 text-sm text-muted-foreground">Loading history…</p>
+      <p className="py-4 text-sm text-muted-foreground">{t("loading")}</p>
     );
   }
   if (error) {
@@ -42,10 +55,8 @@ export function HistoryTab({ refetchTrigger }: HistoryTabProps) {
   if (!history.length) {
     return (
       <div className="flex flex-col items-center justify-center rounded-md border border-dashed border-border/60 bg-muted/30 px-4 py-8 text-center">
-        <p className="text-sm font-medium text-foreground">No history yet</p>
-        <p className="mt-1 text-sm text-muted-foreground">
-          Make a guess to see your results here after each round.
-        </p>
+        <p className="text-sm font-medium text-foreground">{t("emptyTitle")}</p>
+        <p className="mt-1 text-sm text-muted-foreground">{t("emptyHint")}</p>
       </div>
     );
   }
@@ -58,7 +69,7 @@ export function HistoryTab({ refetchTrigger }: HistoryTabProps) {
           className="rounded-md border border-border/60 px-2 py-2 text-sm"
         >
           <div className="flex flex-wrap items-center justify-between gap-x-2 gap-y-0.5">
-            <span className="font-medium capitalize">{item.direction}</span>
+            <span className="font-medium capitalize">{directionLabel(item.direction)}</span>
             <span
               className={
                 item.result === "win"
@@ -68,14 +79,17 @@ export function HistoryTab({ refetchTrigger }: HistoryTabProps) {
                     : "text-muted-foreground"
               }
             >
-              {item.result === "win" ? "Win" : item.result === "loss" ? "Loss" : "Tie"}
+              {resultLabel(item.result)}
             </span>
           </div>
           <p className="mt-0.5 text-muted-foreground">
-            ${formatPrice(item.priceAtGuess)} → ${formatPrice(item.priceAtResolution)}
+            {t("priceArrow", {
+              from: `$${formatPrice(item.priceAtGuess)}`,
+              to: `$${formatPrice(item.priceAtResolution)}`,
+            })}
           </p>
           <p className="mt-0.5 text-muted-foreground">
-            Score after: {item.scoreAfter}
+            {t("scoreAfter", { score: String(item.scoreAfter) })}
           </p>
           <p className="text-xs text-muted-foreground">{formatTime(item.timestamp)}</p>
         </li>

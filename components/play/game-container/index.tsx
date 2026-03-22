@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef } from "react";
+import { useLocale, useTranslations } from "next-intl";
 import { LivePrice } from "@/components/play/live-price";
 import { PriceChart } from "@/components/play/price-chart";
 import { GuessButtons } from "@/components/play/guess-buttons";
@@ -20,6 +21,8 @@ export function GameContainer({
   initialPendingGuess,
   onResolution,
 }: GameContainerProps) {
+  const locale = useLocale();
+  const t = useTranslations("Game");
   const { price, priceHistory, loading, error } = useBinancePrice();
   const {
     score,
@@ -40,14 +43,24 @@ export function GameContainer({
     prevLastResultRef.current = lastResult;
   }, [lastResult, onResolution]);
 
+  const formatMoney = (n: number) =>
+    new Intl.NumberFormat(locale, {
+      style: "currency",
+      currency: "USD",
+      minimumFractionDigits: 2,
+      maximumFractionDigits: 2,
+    }).format(n);
+
+  const displayName = userDisplayName ?? t("anonymous");
+
   return (
     <div className="flex flex-col items-center gap-6 text-center">
       <h1 className="text-lg font-semibold tracking-tight text-foreground sm:text-2xl md:text-3xl">
-        Hi {userDisplayName ?? "…"}, Let's Play
+        {t("greeting", { name: displayName })}
       </h1>
       <div className="flex w-full flex-col items-center gap-4 sm:flex-row sm:justify-center sm:gap-8">
         <p className="text-sm font-medium text-foreground sm:text-base">
-          Score: {score}
+          {t("score", { score: String(score) })}
         </p>
         <LivePrice price={price} loading={loading} error={error} />
       </div>
@@ -60,31 +73,32 @@ export function GameContainer({
           className={`flex flex-col items-center gap-1 ${lastResult === "win" ? "result-celebration" : lastResult === "loss" ? "result-loss" : ""}`}
         >
           <p className="text-sm font-medium text-foreground sm:text-base">
-            {lastResult === "win" && "You won! Guess again?"}
+            {lastResult === "win" && t("resultWin")}
             {lastResult === "loss" && (
               <>
-                <span aria-hidden>😢 </span>You lost. Guess again?
+                <span aria-hidden>😢 </span>
+                {t("resultLoss")}
               </>
             )}
-            {lastResult === "tie" && "Tie. No change. Guess again?"}
+            {lastResult === "tie" && t("resultTie")}
           </p>
           {lastResolution != null && (
             <p className="text-sm text-muted-foreground">
-              You guessed ${lastResolution.priceAtGuess.toLocaleString("en-US", { minimumFractionDigits: 2, maximumFractionDigits: 2 })}, actual
-              price was ${lastResolution.priceAtResolution.toLocaleString("en-US", { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
+              {t("resolutionDetail", {
+                guessed: formatMoney(lastResolution.priceAtGuess),
+                actual: formatMoney(lastResolution.priceAtResolution),
+              })}
             </p>
           )}
         </div>
       )}
       {pendingGuess != null && nextCheckInSeconds !== null && (
         <p className="text-sm text-muted-foreground">
-          Next check in {nextCheckInSeconds}s
+          {t("nextCheck", { seconds: String(nextCheckInSeconds) })}
         </p>
       )}
       {pendingGuess != null && nextCheckInSeconds === null && (
-        <p className="text-sm text-muted-foreground">
-          Checking for result
-        </p>
+        <p className="text-sm text-muted-foreground">{t("checkingResult")}</p>
       )}
       <GuessButtons
         hasPendingGuess={pendingGuess != null}

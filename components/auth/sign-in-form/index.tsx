@@ -1,22 +1,26 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import Link from "next/link";
+import { useSearchParams } from "next/navigation";
+import { useLocale, useTranslations } from "next-intl";
+import { Link as IntlLink } from "@/i18n/navigation";
+import { hrefForLocale } from "@/i18n/paths";
 import { getCsrfToken, getProviders, signIn } from "next-auth/react";
 import type { ClientSafeProvider } from "next-auth/react";
 import { Button } from "@/components/ui/button";
 
 const buttonClass =
-  "w-full min-h-12 text-sm sm:w-auto sm:min-h-11 sm:text-base bg-teal-600 text-white shadow-md no-underline hover:bg-teal-700 hover:text-white focus-visible:ring-teal-400 focus-visible:ring-offset-2 focus-visible:ring-offset-teal-50 dark:focus-visible:ring-teal-400 dark:focus-visible:ring-offset-teal-950";
+  "w-full min-h-12 text-sm sm:w-auto sm:min-h-11 sm:text-base bg-teal-600 text-white shadow-md no-underline hover:bg-teal-700 hover:text-white focus-visible:ring-teal-400 focus-visible:ring-offset-2 focus-visible:ring-offset-card";
 
 const inputClass =
-  "w-full rounded-md border border-input bg-background px-3 py-2 text-base shadow-sm transition-colors placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-teal-400 focus-visible:ring-offset-2 focus-visible:ring-offset-teal-50 dark:focus-visible:ring-offset-teal-950";
+  "w-full rounded-md border border-input bg-background px-3 py-2 text-base shadow-sm transition-colors placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-teal-400 focus-visible:ring-offset-2 focus-visible:ring-offset-card";
 
-type SignInFormProps = {
-  callbackUrl?: string;
-};
-
-export function SignInForm({ callbackUrl = "/" }: SignInFormProps) {
+export function SignInForm() {
+  const locale = useLocale();
+  const t = useTranslations("SignInForm");
+  const searchParams = useSearchParams();
+  const effectiveCallback =
+    searchParams.get("callbackUrl") || hrefForLocale(locale, "/");
   const [csrfToken, setCsrfToken] = useState<string | null>(null);
   const [providers, setProviders] = useState<Record<string, ClientSafeProvider> | null>(null);
 
@@ -29,7 +33,7 @@ export function SignInForm({ callbackUrl = "/" }: SignInFormProps) {
 
   if (csrfToken === null || providers === null) {
     return (
-      <div className="flex justify-center py-8 text-muted-foreground">Loading…</div>
+      <div className="flex justify-center py-8 text-muted-foreground">{t("loading")}</div>
     );
   }
 
@@ -44,14 +48,14 @@ export function SignInForm({ callbackUrl = "/" }: SignInFormProps) {
             type="button"
             size="lg"
             className={buttonClass}
-            onClick={() => signIn("google", { callbackUrl })}
+            onClick={() => signIn("google", { callbackUrl: effectiveCallback })}
           >
-            Sign in with Google
+            {t("signInWithGoogle")}
           </Button>
           {hasCredentials && (
             <div className="flex w-full items-center gap-3 text-sm text-muted-foreground">
               <span className="flex-1 border-t border-border" />
-              or
+              {t("divider")}
               <span className="flex-1 border-t border-border" />
             </div>
           )}
@@ -65,10 +69,10 @@ export function SignInForm({ callbackUrl = "/" }: SignInFormProps) {
           className="flex w-full flex-col items-center gap-4 sm:w-auto"
         >
           <input name="csrfToken" type="hidden" defaultValue={csrfToken} />
-          <input name="callbackUrl" type="hidden" defaultValue={callbackUrl} />
+          <input name="callbackUrl" type="hidden" defaultValue={effectiveCallback} />
           <div className="flex w-full min-w-[240px] flex-col gap-2 sm:w-80">
             <label htmlFor="email" className="text-sm font-medium text-foreground">
-              Email
+              {t("email")}
             </label>
             <input
               id="email"
@@ -77,12 +81,12 @@ export function SignInForm({ callbackUrl = "/" }: SignInFormProps) {
               autoComplete="email"
               required
               className={inputClass}
-              placeholder="you@example.com"
+              placeholder={t("emailPlaceholder")}
             />
           </div>
           <div className="flex w-full min-w-[240px] flex-col gap-2 sm:w-80">
             <label htmlFor="password" className="text-sm font-medium text-foreground">
-              Password
+              {t("password")}
             </label>
             <input
               id="password"
@@ -94,19 +98,23 @@ export function SignInForm({ callbackUrl = "/" }: SignInFormProps) {
             />
           </div>
           <Button type="submit" size="lg" className={buttonClass}>
-            Sign in
+            {t("submit")}
           </Button>
         </form>
       )}
 
       <p className="text-center text-sm text-muted-foreground">
-        Don&apos;t have an account?{" "}
-        <Link
-          href={`/auth/signup${callbackUrl !== "/" ? `?callbackUrl=${encodeURIComponent(callbackUrl)}` : ""}`}
+        {t("noAccount")}{" "}
+        <IntlLink
+          href={
+            effectiveCallback !== hrefForLocale(locale, "/")
+              ? `/auth/signup?callbackUrl=${encodeURIComponent(effectiveCallback)}`
+              : "/auth/signup"
+          }
           className="font-medium text-teal-600 underline-offset-4 hover:underline dark:text-teal-400"
         >
-          Sign up
-        </Link>
+          {t("signUp")}
+        </IntlLink>
       </p>
     </div>
   );

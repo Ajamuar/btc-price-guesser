@@ -40,7 +40,7 @@ describe("GameContainer", () => {
     render(
       <GameContainer initialScore={0} initialPendingGuess={null} />
     );
-    expect(screen.getByRole("button", { name: /Up/i })).toBeInTheDocument();
-    expect(screen.getByRole("button", { name: /Down/i })).toBeInTheDocument();
+    expect(screen.getByText("Up")).toBeInTheDocument();
+    expect(screen.getByText("Down")).toBeInTheDocument();
   });
 });

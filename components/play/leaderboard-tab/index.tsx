@@ -1,5 +1,6 @@
 "use client";
 
+import { useTranslations } from "next-intl";
 import { useLeaderboard } from "@/hooks/use-leaderboard";
 
 type LeaderboardTabProps = {
@@ -8,11 +9,12 @@ type LeaderboardTabProps = {
 };
 
 export function LeaderboardTab({ currentUserId, refetchTrigger }: LeaderboardTabProps) {
+  const t = useTranslations("Leaderboard");
   const { entries, loading, error } = useLeaderboard(50, refetchTrigger);
 
   if (loading) {
     return (
-      <p className="py-4 text-sm text-muted-foreground">Loading leaderboard…</p>
+      <p className="py-4 text-sm text-muted-foreground">{t("loading")}</p>
     );
   }
   if (error) {
@@ -22,9 +24,7 @@ export function LeaderboardTab({ currentUserId, refetchTrigger }: LeaderboardTab
   }
   if (!entries.length) {
     return (
-      <p className="py-4 text-sm text-muted-foreground">
-        No scores yet. Make a guess to join the board!
-      </p>
+      <p className="py-4 text-sm text-muted-foreground">{t("empty")}</p>
     );
   }
 
@@ -45,7 +45,7 @@ export function LeaderboardTab({ currentUserId, refetchTrigger }: LeaderboardTab
               </span>
               <span>{entry.name || entry.userId || "—"}</span>
               {isYou && (
-                <span className="text-xs text-muted-foreground">(you)</span>
+                <span className="text-xs text-muted-foreground">{t("you")}</span>
               )}
             </span>
             <span className="tabular-nums font-medium">{entry.score}</span>

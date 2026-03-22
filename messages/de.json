@@ -1,0 +1,125 @@
+{
+  "Metadata": {
+    "title": "BTC-Preisraten",
+    "description": "Rate, ob der BTC nach 1 Minute steigt oder fällt. Melde dich an, um zu spielen."
+  },
+  "Home": {
+    "play": "Spielen"
+  },
+  "GameRules": {
+    "title": "BTC-Preisraten",
+    "rulesHeading": "Regeln:",
+    "ruleGuess": "Rate, ob der BTC nach 1 Minute steigt oder fällt.",
+    "ruleResolution": "Auswertung: 60 s, wenn sich der Preis geändert hat; sonst Unentschieden nach 2 Minuten.",
+    "ruleScore": "Punkte: +1 richtig, -1 falsch, 0 Unentschieden. Nur eine Wette gleichzeitig.",
+    "ruleSignIn": "Zum Spielen anmelden."
+  },
+  "SiteHeader": {
+    "appName": "BTC-Preisraten",
+    "signIn": "Anmelden",
+    "signOut": "Abmelden"
+  },
+  "Auth": {
+    "signInTitle": "Anmelden",
+    "signUpTitle": "Registrieren",
+    "signOutTitle": "Abmelden",
+    "signOutConfirm": "Möchtest du dich wirklich abmelden?"
+  },
+  "SignInForm": {
+    "loading": "Laden…",
+    "signInWithGoogle": "Mit Google anmelden",
+    "divider": "oder",
+    "email": "E-Mail",
+    "password": "Passwort",
+    "emailPlaceholder": "du@beispiel.de",
+    "submit": "Anmelden",
+    "noAccount": "Noch kein Konto?",
+    "signUp": "Registrieren"
+  },
+  "SignUpForm": {
+    "loading": "Laden…",
+    "email": "E-Mail",
+    "password": "Passwort",
+    "passwordHint": "Mindestens 8 Zeichen",
+    "name": "Name",
+    "nameOptional": "(optional)",
+    "namePlaceholder": "Dein Name",
+    "emailPlaceholder": "du@beispiel.de",
+    "submit": "Konto erstellen",
+    "submitting": "Konto wird erstellt…",
+    "hasAccount": "Bereits ein Konto?",
+    "signIn": "Anmelden",
+    "errorEmailTaken": "E-Mail bereits registriert",
+    "errorInvalid": "Ungültige Eingabe",
+    "errorGeneric": "Etwas ist schiefgelaufen. Bitte versuche es erneut."
+  },
+  "SignOutActions": {
+    "signOut": "Abmelden",
+    "cancel": "Abbrechen"
+  },
+  "Game": {
+    "greeting": "Hallo {name}, auf geht's",
+    "anonymous": "…",
+    "signedInFallback": "Angemeldet",
+    "score": "Punkte: {score}",
+    "resultWin": "Gewonnen! Nochmal raten?",
+    "resultLoss": "Verloren. Nochmal raten?",
+    "resultTie": "Unentschieden. Keine Änderung. Nochmal raten?",
+    "resolutionDetail": "Dein Tipp: {guessed}, tatsächlicher Preis: {actual}",
+    "nextCheck": "Nächste Prüfung in {seconds} s",
+    "checkingResult": "Ergebnis wird geprüft"
+  },
+  "GuessButtons": {
+    "up": "Hoch",
+    "down": "Runter",
+    "upAria": "Tipp: Preis steigt",
+    "downAria": "Tipp: Preis fällt",
+    "submitting": "Wird gesendet…",
+    "waiting0": "Warten auf die Tat…",
+    "waiting1": "Warten auf dein Glück…",
+    "waiting2": "Licht, Kamera, Geld!",
+    "waiting3": "Die beste Pokerface gewinnt",
+    "waiting4": "Das Leben ist eine Achterbahn – rauf oder runter",
+    "waiting5": "Bitcoin macht Nerds reicher seit 2009",
+    "waiting6": "Ruhe bewahren und weiter raten",
+    "waiting7": "Bleib cool und rate weiter"
+  },
+  "LivePrice": {
+    "connecting": "Verbinden…",
+    "btcPrice": "BTC: {price}"
+  },
+  "PriceChart": {
+    "empty": "Verbinden… Der Kurs-Chart erscheint, sobald Daten da sind.",
+    "tooltipPrice": "Preis",
+    "guessLabel": "Tipp",
+    "guessPriceLine": "Tipp-Preis: {price}",
+    "now": "jetzt",
+    "minusSeconds": "-{sec}s"
+  },
+  "PlayTabs": {
+    "leaderboard": "Bestenliste",
+    "history": "Verlauf"
+  },
+  "Leaderboard": {
+    "loading": "Bestenliste wird geladen…",
+    "empty": "Noch keine Punkte. Mach einen Tipp und steig ein!",
+    "you": "(du)"
+  },
+  "History": {
+    "loading": "Verlauf wird geladen…",
+    "emptyTitle": "Noch kein Verlauf",
+    "emptyHint": "Tippe, um nach jeder Runde deine Ergebnisse hier zu sehen.",
+    "directionUp": "hoch",
+    "directionDown": "runter",
+    "resultWin": "Gewinn",
+    "resultLoss": "Verlust",
+    "resultTie": "Unentschieden",
+    "priceArrow": "{from} → {to}",
+    "scoreAfter": "Punkte danach: {score}"
+  },
+  "GuessButtonsPlaceholder": {
+    "up": "Hoch",
+    "down": "Runter",
+    "hint": "Tipp in Phase 4"
+  }
+}

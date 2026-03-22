@@ -1,19 +1,20 @@
 "use client";
 
-import { useEffect, useMemo } from "react";
+import { useEffect, useState } from "react";
+import { useTranslations } from "next-intl";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 
-const WAITING_MESSAGES = [
-  "Waiting for the deed to happen",
-  "Awaiting your fortune to change",
-  "Lights, camera and money!",
-  "Best poker is a poker face",
-  "Life is a rollercoaster that goes up or down",
-  "Bitcoin making nerds richer since 2009 - Unknown",
-  "If you want proof bitcoin is real and they work, send them to me and I will use and show you",
-  "Keep calm and make more guesses",
-];
+const WAITING_KEYS = [
+  "waiting0",
+  "waiting1",
+  "waiting2",
+  "waiting3",
+  "waiting4",
+  "waiting5",
+  "waiting6",
+  "waiting7",
+] as const;
 
 type GuessButtonsProps = {
   hasPendingGuess: boolean;
@@ -30,15 +31,19 @@ export function GuessButtons({
   currentPrice,
   loading = false,
 }: GuessButtonsProps) {
+  const t = useTranslations("GuessButtons");
   const canSubmit = !hasPendingGuess && !loading && currentPrice !== null;
 
-  const waitingMessage = useMemo(
-    () =>
-      WAITING_MESSAGES[
-        Math.floor(Math.random() * WAITING_MESSAGES.length)
-      ],
-    [hasPendingGuess]
-  );
+  const [waitingMessage, setWaitingMessage] = useState<string | null>(null);
+
+  useEffect(() => {
+    if (!hasPendingGuess || loading) {
+      setWaitingMessage(null);
+      return;
+    }
+    const key = WAITING_KEYS[Math.floor(Math.random() * WAITING_KEYS.length)];
+    setWaitingMessage(t(key));
+  }, [hasPendingGuess, loading, t]);
 
   useEffect(() => {
     if (!canSubmit || currentPrice === null) return;
@@ -71,6 +76,7 @@ export function GuessButtons({
           variant={selectedDirection === "up" ? "default" : "outline"}
           disabled={!canSubmit}
           onClick={() => currentPrice !== null && onGuess("up", currentPrice)}
+          aria-label={t("upAria")}
           className={cn(
             "text-sm sm:text-base",
             selectedDirection === "up"
@@ -78,13 +84,14 @@ export function GuessButtons({
               : "border-green-600 text-green-600 hover:bg-green-50 dark:border-green-500 dark:text-green-400 dark:hover:bg-green-950/50"
           )}
         >
-          Up
+          {t("up")}
         </Button>
         <Button
           size="lg"
           variant={selectedDirection === "down" ? "default" : "outline"}
           disabled={!canSubmit}
           onClick={() => currentPrice !== null && onGuess("down", currentPrice)}
+          aria-label={t("downAria")}
           className={cn(
             "text-sm sm:text-base",
             selectedDirection === "down"
@@ -92,13 +99,13 @@ export function GuessButtons({
               : "border-red-600 text-red-600 hover:bg-red-50 dark:border-red-500 dark:text-red-400 dark:hover:bg-red-950/50"
           )}
         >
-          Down
+          {t("down")}
         </Button>
       </div>
       {loading && (
-        <p className="text-xs text-muted-foreground">Submitting…</p>
+        <p className="text-xs text-muted-foreground">{t("submitting")}</p>
       )}
-      {hasPendingGuess && !loading && (
+      {hasPendingGuess && !loading && waitingMessage && (
         <p className="text-xs text-muted-foreground">{waitingMessage}</p>
       )}
     </div>

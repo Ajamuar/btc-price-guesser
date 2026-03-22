@@ -19,6 +19,7 @@ describe("LivePrice", () => {
 
   it("shows formatted BTC price when price is set", () => {
     render(<LivePrice price={71462.5} />);
-    expect(screen.getByText(/BTC: \$71,462\.50/)).toBeInTheDocument();
+    expect(screen.getByText(/BTC:/)).toBeInTheDocument();
+    expect(screen.getByText(/71,462\.50/)).toBeInTheDocument();
   });
 });

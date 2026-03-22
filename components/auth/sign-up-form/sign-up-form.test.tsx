@@ -5,6 +5,7 @@ import { SignUpForm } from "./index";
 const mockPush = jest.fn();
 jest.mock("next/navigation", () => ({
   useRouter: () => ({ push: mockPush }),
+  useSearchParams: () => new URLSearchParams(),
 }));
 
 describe("SignUpForm", () => {

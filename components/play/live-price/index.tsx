@@ -1,5 +1,7 @@
 "use client";
 
+import { useLocale, useTranslations } from "next-intl";
+
 type LivePriceProps = {
   price: number | null;
   loading?: boolean;
@@ -7,10 +9,13 @@ type LivePriceProps = {
 };
 
 export function LivePrice({ price, loading = false, error = null }: LivePriceProps) {
+  const locale = useLocale();
+  const t = useTranslations("LivePrice");
+
   if (loading) {
     return (
       <p className="text-base font-medium text-muted-foreground sm:text-lg">
-        Connecting…
+        {t("connecting")}
       </p>
     );
   }
@@ -28,9 +33,15 @@ export function LivePrice({ price, loading = false, error = null }: LivePricePro
       </p>
     );
   }
+  const formatted = new Intl.NumberFormat(locale, {
+    style: "currency",
+    currency: "USD",
+    minimumFractionDigits: 2,
+    maximumFractionDigits: 2,
+  }).format(price);
   return (
     <p className="text-base font-medium text-foreground sm:text-lg">
-      BTC: ${price.toLocaleString("en-US", { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
+      {t("btcPrice", { price: formatted })}
     </p>
   );
 }

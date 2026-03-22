@@ -1,21 +1,24 @@
 "use client";
 
 import { useState } from "react";
-import Link from "next/link";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
+import { useLocale, useTranslations } from "next-intl";
+import { Link as IntlLink } from "@/i18n/navigation";
+import { hrefForLocale } from "@/i18n/paths";
 import { Button } from "@/components/ui/button";
 
 const buttonClass =
-  "w-full min-h-12 text-sm sm:w-auto sm:min-h-11 sm:text-base bg-teal-600 text-white shadow-md no-underline hover:bg-teal-700 hover:text-white focus-visible:ring-teal-400 focus-visible:ring-offset-2 focus-visible:ring-offset-teal-50 dark:focus-visible:ring-teal-400 dark:focus-visible:ring-offset-teal-950";
+  "w-full min-h-12 text-sm sm:w-auto sm:min-h-11 sm:text-base bg-teal-600 text-white shadow-md no-underline hover:bg-teal-700 hover:text-white focus-visible:ring-teal-400 focus-visible:ring-offset-2 focus-visible:ring-offset-card";
 
 const inputClass =
-  "w-full rounded-md border border-input bg-background px-3 py-2 text-base shadow-sm transition-colors placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-teal-400 focus-visible:ring-offset-2 focus-visible:ring-offset-teal-50 dark:focus-visible:ring-offset-teal-950";
+  "w-full rounded-md border border-input bg-background px-3 py-2 text-base shadow-sm transition-colors placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-teal-400 focus-visible:ring-offset-2 focus-visible:ring-offset-card";
 
-type SignUpFormProps = {
-  callbackUrl?: string;
-};
-
-export function SignUpForm({ callbackUrl = "/" }: SignUpFormProps) {
+export function SignUpForm() {
+  const locale = useLocale();
+  const t = useTranslations("SignUpForm");
+  const searchParams = useSearchParams();
+  const resolvedCallback =
+    searchParams.get("callbackUrl") || hrefForLocale(locale, "/");
   const router = useRouter();
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
@@ -39,20 +42,24 @@ export function SignUpForm({ callbackUrl = "/" }: SignUpFormProps) {
       const data = await res.json().catch(() => ({}));
 
       if (res.ok) {
-        const signInUrl = `/auth/signin${callbackUrl !== "/" ? `?callbackUrl=${encodeURIComponent(callbackUrl)}` : ""}`;
+        const signInBase = hrefForLocale(locale, "/auth/signin");
+        const signInUrl =
+          resolvedCallback !== hrefForLocale(locale, "/")
+            ? `${signInBase}?callbackUrl=${encodeURIComponent(resolvedCallback)}`
+            : signInBase;
         router.push(signInUrl);
         return;
       }
 
       if (res.status === 409) {
-        setError(data.error ?? "Email already registered");
+        setError(data.error ?? t("errorEmailTaken"));
         return;
       }
       if (res.status === 400) {
-        setError(data.error ?? "Invalid input");
+        setError(data.error ?? t("errorInvalid"));
         return;
       }
-      setError(data.error ?? "Something went wrong. Please try again.");
+      setError(data.error ?? t("errorGeneric"));
     } finally {
       setLoading(false);
     }
@@ -71,7 +78,7 @@ export function SignUpForm({ callbackUrl = "/" }: SignUpFormProps) {
         )}
         <div className="flex w-full min-w-[240px] flex-col gap-2 sm:w-80">
           <label htmlFor="signup-email" className="text-sm font-medium text-foreground">
-            Email
+            {t("email")}
           </label>
           <input
             id="signup-email"
@@ -80,13 +87,13 @@ export function SignUpForm({ callbackUrl = "/" }: SignUpFormProps) {
             autoComplete="email"
             required
             className={inputClass}
-            placeholder="you@example.com"
+            placeholder={t("emailPlaceholder")}
             disabled={loading}
           />
         </div>
         <div className="flex w-full min-w-[240px] flex-col gap-2 sm:w-80">
           <label htmlFor="signup-password" className="text-sm font-medium text-foreground">
-            Password
+            {t("password")}
           </label>
           <input
             id="signup-password"
@@ -98,11 +105,11 @@ export function SignUpForm({ callbackUrl = "/" }: SignUpFormProps) {
             className={inputClass}
             disabled={loading}
           />
-          <p className="text-xs text-muted-foreground">At least 8 characters</p>
+          <p className="text-xs text-muted-foreground">{t("passwordHint")}</p>
         </div>
         <div className="flex w-full min-w-[240px] flex-col gap-2 sm:w-80">
           <label htmlFor="signup-name" className="text-sm font-medium text-foreground">
-            Name <span className="text-muted-foreground">(optional)</span>
+            {t("name")} <span className="text-muted-foreground">{t("nameOptional")}</span>
           </label>
           <input
             id="signup-name"
@@ -110,22 +117,26 @@ export function SignUpForm({ callbackUrl = "/" }: SignUpFormProps) {
             type="text"
             autoComplete="name"
             className={inputClass}
-            placeholder="Your name"
+            placeholder={t("namePlaceholder")}
             disabled={loading}
           />
         </div>
         <Button type="submit" size="lg" className={buttonClass} disabled={loading}>
-          {loading ? "Creating account…" : "Create account"}
+          {loading ? t("submitting") : t("submit")}
         </Button>
       </form>
       <p className="text-center text-sm text-muted-foreground">
-        Already have an account?{" "}
-        <Link
-          href={`/auth/signin${callbackUrl !== "/" ? `?callbackUrl=${encodeURIComponent(callbackUrl)}` : ""}`}
+        {t("hasAccount")}{" "}
+        <IntlLink
+          href={
+            resolvedCallback !== hrefForLocale(locale, "/")
+              ? `/auth/signin?callbackUrl=${encodeURIComponent(resolvedCallback)}`
+              : "/auth/signin"
+          }
           className="font-medium text-teal-600 underline-offset-4 hover:underline dark:text-teal-400"
         >
-          Sign in
-        </Link>
+          {t("signIn")}
+        </IntlLink>
       </p>
     </div>
   );

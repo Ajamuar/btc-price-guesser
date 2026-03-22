@@ -1,5 +1,5 @@
-import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
+import { getLocale } from "next-intl/server";
 import "./globals.css";
 
 const geistSans = Geist({
@@ -12,18 +12,15 @@ const geistMono = Geist_Mono({
   subsets: ["latin"],
 });
 
-export const metadata: Metadata = {
-  title: "BTC Price Guesser",
-  description: "Guess if BTC goes up or down after 1 minute. Sign in to play.",
-};
-
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const locale = await getLocale();
+
   return (
-    <html lang="en" className="min-w-full">
+    <html lang={locale} className="min-w-full">
       <body
         className={`${geistSans.variable} ${geistMono.variable} min-w-full antialiased`}
       >
