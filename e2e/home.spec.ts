@@ -17,11 +17,11 @@ test.describe("Home page", () => {
     await page.goto("/");
 
     await expect(page.getByText("Rules:", { exact: true })).toBeVisible();
-    await expect(page.getByText(/Guess if BTC goes/i)).toBeVisible();
-    await expect(page.getByText(/after 1 minute/i)).toBeVisible();
     await expect(
-      page.getByText(/Resolution: 60s if price changed/i)
+      page.getByText(/Predict whether Bitcoin.*one minute after you guess/i)
     ).toBeVisible();
+    await expect(page.getByText(/After one minute, we compare/i)).toBeVisible();
+    await expect(page.getByText(/tie after two minutes/i)).toBeVisible();
     await expect(page.getByText(/Score:.*correct.*wrong.*tie/i)).toBeVisible();
     await expect(page.getByText(/Sign in to play/i)).toBeVisible();
   });

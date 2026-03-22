@@ -1,4 +1,5 @@
 import type { Session } from "next-auth";
+import { MainRegion } from "@/components/main-region";
 import { SiteHeader } from "@/components/site-header";
 import { MainContentCard } from "@/components/main-content-card";
 import {
@@ -34,9 +35,9 @@ export function CardPageShell({
   return (
     <div className={cn(CARD_PAGE_SHELL_OUTER_CLASS, className)}>
       <SiteHeader session={session} />
-      <main id="main-content" className={cn(CARD_PAGE_SHELL_MAIN_CLASS, mainClassName)}>
+      <MainRegion className={cn(CARD_PAGE_SHELL_MAIN_CLASS, mainClassName)}>
         {children}
-      </main>
+      </MainRegion>
     </div>
   );
 }

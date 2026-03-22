@@ -4,6 +4,8 @@ import { cn } from "@/lib/utils";
 const variantClass = {
   narrow:
     "w-full max-w-full px-0 sm:max-w-2xl sm:px-6 lg:max-w-3xl lg:px-8",
+  medium:
+    "w-full max-w-full px-0 sm:max-w-3xl sm:px-6 lg:max-w-4xl lg:px-8 xl:max-w-5xl xl:px-10",
   wide: "w-full max-w-full px-0 sm:max-w-4xl sm:px-6 lg:max-w-7xl lg:px-8 xl:max-w-[88rem] 2xl:max-w-[96rem]",
 } as const;
 

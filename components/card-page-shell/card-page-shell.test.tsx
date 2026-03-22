@@ -38,6 +38,9 @@ describe("CardPageShell", () => {
       "items-center",
       "justify-center"
     );
+    expect(main).toHaveAttribute("id", "main-content");
+    expect(main).toHaveAttribute("tabIndex", "-1");
+    expect(main).toHaveAttribute("aria-label", "Main content");
   });
 
   it("merges custom className on outer shell", () => {

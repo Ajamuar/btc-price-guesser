@@ -1,7 +1,7 @@
 {
   "Metadata": {
     "title": "BTC Price Guesser",
-    "description": "Guess if BTC goes up or down after 1 minute. Sign in to play."
+    "description": "Predict if Bitcoin goes up or down after one minute. Sign in to play."
   },
   "Home": {
     "play": "Play"
@@ -9,8 +9,8 @@
   "GameRules": {
     "title": "BTC Price Guesser",
     "rulesHeading": "Rules:",
-    "ruleGuess": "Guess if BTC goes up or down after 1 minute.",
-    "ruleResolution": "Resolution: 60s if price changed; otherwise tie at 2 minutes.",
+    "ruleGuess": "Predict whether Bitcoin's price will be higher or lower one minute after you guess than it was when you tapped Up or Down.",
+    "ruleResolution": "After one minute, we compare the price at your guess to the price then. If it clearly went up or down by more than a tiny amount (about a cent), you win or lose. If it barely moves, or we can't get a reliable price for that moment, it's a tie after two minutes — your score stays the same.",
     "ruleScore": "Score: +1 correct, -1 wrong, 0 tie. One guess at a time.",
     "ruleSignIn": "Sign in to play."
   },
@@ -21,7 +21,8 @@
     "mainNav": "Account"
   },
   "SkipLink": {
-    "label": "Skip to main content"
+    "label": "Skip to main content",
+    "mainLandmark": "Main content"
   },
   "Auth": {
     "signInTitle": "Sign in",

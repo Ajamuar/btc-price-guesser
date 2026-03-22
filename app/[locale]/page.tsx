@@ -24,7 +24,7 @@ export default async function Home() {
 
   return (
     <CardPageShell session={session}>
-      <CardPageFrame innerClassName={CARD_PAGE_INNER_STACK_CLASS}>
+      <CardPageFrame variant="medium" innerClassName={CARD_PAGE_INNER_STACK_CLASS}>
         <GameRulesCard />
         <Button
           asChild

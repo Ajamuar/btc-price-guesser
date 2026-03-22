@@ -17,13 +17,16 @@ describe("GameRulesCard", () => {
   it("renders guess up or down rule", async () => {
     const ui = await GameRulesCard();
     render(ui);
-    expect(screen.getByText(/Guess if BTC goes/)).toBeInTheDocument();
+    expect(
+      screen.getByText(/Predict whether Bitcoin.*one minute after you guess/i)
+    ).toBeInTheDocument();
   });
 
   it("renders resolution and score rules", async () => {
     const ui = await GameRulesCard();
     render(ui);
-    expect(screen.getByText(/Resolution: 60s/)).toBeInTheDocument();
+    expect(screen.getByText(/After one minute, we compare/)).toBeInTheDocument();
+    expect(screen.getByText(/tie after two minutes/)).toBeInTheDocument();
     expect(screen.getByText(/Score: \+1 correct/)).toBeInTheDocument();
     expect(screen.getByText(/Sign in to play/)).toBeInTheDocument();
   });

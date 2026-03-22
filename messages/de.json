@@ -1,7 +1,7 @@
 {
   "Metadata": {
     "title": "BTC-Preisraten",
-    "description": "Rate, ob der BTC nach 1 Minute steigt oder fällt. Melde dich an, um zu spielen."
+    "description": "Sag voraus, ob Bitcoin nach einer Minute steigt oder fällt. Melde dich an, um zu spielen."
   },
   "Home": {
     "play": "Spielen"
@@ -9,8 +9,8 @@
   "GameRules": {
     "title": "BTC-Preisraten",
     "rulesHeading": "Regeln:",
-    "ruleGuess": "Rate, ob der BTC nach 1 Minute steigt oder fällt.",
-    "ruleResolution": "Auswertung: 60 s, wenn sich der Preis geändert hat; sonst Unentschieden nach 2 Minuten.",
+    "ruleGuess": "Sag voraus, ob der Bitcoin-Preis eine Minute nach deinem Tipp höher oder niedriger ist als beim Tippen auf Hoch oder Runter.",
+    "ruleResolution": "Nach einer Minute vergleichen wir den Preis beim Tipp mit dem Preis in diesem Moment. Bewegt er sich klar um mehr als einen kleinen Betrag (etwa einen Cent), gewinnst oder verlierst du. Bewegt er sich kaum, oder lässt sich kein zuverlässiger Preis ermitteln, ist es nach zwei Minuten Unentschieden – dein Punktestand bleibt gleich.",
     "ruleScore": "Punkte: +1 richtig, -1 falsch, 0 Unentschieden. Nur eine Wette gleichzeitig.",
     "ruleSignIn": "Zum Spielen anmelden."
   },
@@ -18,6 +18,10 @@
     "appName": "BTC-Preisraten",
     "signIn": "Anmelden",
     "signOut": "Abmelden"
+  },
+  "SkipLink": {
+    "label": "Zum Hauptinhalt springen",
+    "mainLandmark": "Hauptinhalt"
   },
   "Auth": {
     "signInTitle": "Anmelden",
