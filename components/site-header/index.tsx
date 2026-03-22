@@ -9,10 +9,10 @@ type SiteHeaderProps = {
 
 export function SiteHeader({ session }: SiteHeaderProps) {
   return (
-    <header className="flex w-full items-center justify-between border-b border-teal-200/50 bg-white/95 px-3 py-4 shadow-sm backdrop-blur md:px-6 md:py-4 lg:px-8 dark:border-teal-900/30 dark:bg-teal-950/95">
+    <header className="sticky top-0 z-50 flex w-full items-center justify-between border-b border-border bg-background px-3 py-4 shadow-md md:px-6 md:py-4 lg:px-8">
       <Link
         href="/"
-        className="text-base font-semibold text-slate-900 hover:text-slate-900/90 sm:text-lg dark:text-slate-100 dark:hover:text-slate-100/90"
+        className="text-base font-semibold text-foreground hover:text-foreground/90 sm:text-lg"
       >
         {APP_NAME}
       </Link>
@@ -20,14 +20,14 @@ export function SiteHeader({ session }: SiteHeaderProps) {
         {session ? (
           <Link
             href="/auth/signout"
-            className="rounded-md text-xs font-medium text-slate-700 outline-none hover:text-slate-900 focus-visible:ring-2 focus-visible:ring-teal-400 focus-visible:ring-offset-2 focus-visible:ring-offset-white sm:text-sm dark:text-slate-100 dark:hover:text-slate-100/90 dark:focus-visible:ring-teal-400 dark:focus-visible:ring-offset-teal-950"
+            className="rounded-md text-xs font-medium text-foreground/90 outline-none hover:text-foreground focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background sm:text-sm"
           >
             Sign out
           </Link>
         ) : (
           <Link
             href="/api/auth/signin?callbackUrl=/"
-            className="rounded-md text-xs font-medium text-slate-700 outline-none hover:text-slate-900 focus-visible:ring-2 focus-visible:ring-teal-400 focus-visible:ring-offset-2 focus-visible:ring-offset-white sm:text-sm dark:text-slate-100 dark:hover:text-slate-100/90 dark:focus-visible:ring-teal-400 dark:focus-visible:ring-offset-teal-950"
+            className="rounded-md text-xs font-medium text-foreground/90 outline-none hover:text-foreground focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background sm:text-sm"
           >
             Sign in
           </Link>
