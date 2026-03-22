@@ -41,11 +41,14 @@ export function useBinancePrice() {
       wsRef.current = ws;
 
       ws.onopen = () => {
+        if (wsRef.current !== ws) return;
+        setError(null);
         setLoading(false);
         reconnectAttemptsRef.current = 0;
       };
 
       ws.onmessage = (event) => {
+        if (wsRef.current !== ws) return;
         try {
           const data = JSON.parse(event.data as string) as BinanceTradeEvent;
           if (data.e !== "trade" || !data.p) return;
@@ -70,6 +73,7 @@ export function useBinancePrice() {
       };
 
       ws.onclose = () => {
+        if (wsRef.current !== ws) return;
         wsRef.current = null;
         if (reconnectAttemptsRef.current < maxReconnectAttempts) {
           reconnectTimeoutRef.current = setTimeout(() => {
@@ -82,6 +86,7 @@ export function useBinancePrice() {
       };
 
       ws.onerror = () => {
+        if (wsRef.current !== ws) return;
         setError("Connection error");
       };
     }

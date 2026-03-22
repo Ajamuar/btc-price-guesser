@@ -7,17 +7,17 @@ type LivePriceProps = {
 };
 
 export function LivePrice({ price, loading = false, error = null }: LivePriceProps) {
+  if (loading) {
+    return (
+      <p className="text-base font-medium text-muted-foreground sm:text-lg">
+        Connecting…
+      </p>
+    );
+  }
   if (error) {
     return (
       <p className="text-sm text-destructive">
         {error}
-      </p>
-    );
-  }
-  if (loading) {
-    return (
-      <p className="text-base font-medium text-muted-foreground sm:text-lg">
-        —
       </p>
     );
   }
