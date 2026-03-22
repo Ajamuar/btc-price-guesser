@@ -78,7 +78,11 @@ test.describe("Play page (authenticated)", () => {
 
     await expect(page.getByText(/Score:/)).toBeVisible();
     await expect(
-      page.getByText(/BTC:/).or(page.getByText("—"))
+      page
+        .getByText(/BTC:/)
+        .or(page.getByText("—"))
+        // exact: true — chart has a longer line that also starts with "Connecting…"
+        .or(page.getByText("Connecting…", { exact: true }))
     ).toBeVisible({ timeout: 15_000 });
   });
 
@@ -86,6 +90,8 @@ test.describe("Play page (authenticated)", () => {
     page,
   }: { page: Page }) => {
     await page.goto("/play");
+
+    await expect(page.getByText(/BTC:/)).toBeVisible({ timeout: 15_000 });
 
     const upButton = page.getByRole("button", { name: "Up" });
     const downButton = page.getByRole("button", { name: "Down" });
@@ -132,6 +138,7 @@ test.describe("Play page (authenticated)", () => {
     page,
   }: { page: Page }) => {
     await page.goto("/play");
+    await expect(page.getByText(/BTC:/)).toBeVisible({ timeout: 15_000 });
     const upButton = page.getByRole("button", { name: "Up" });
     await expect(upButton).toBeEnabled();
     await upButton.click();

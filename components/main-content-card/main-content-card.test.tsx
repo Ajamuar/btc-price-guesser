@@ -17,8 +17,8 @@ describe("MainContentCard", () => {
         <div>Content</div>
       </MainContentCard>
     );
-    const wrapper = container.firstChild;
-    expect(wrapper).toHaveClass("w-full", "rounded-none", "border-0", "md:rounded-xl");
+    const card = container.firstChild?.firstChild;
+    expect(card).toHaveClass("w-full", "rounded-none", "border-0", "md:rounded-xl");
   });
 
   it("merges custom className", () => {
@@ -27,7 +27,7 @@ describe("MainContentCard", () => {
         <div>Content</div>
       </MainContentCard>
     );
-    const wrapper = container.firstChild;
-    expect(wrapper).toHaveClass("custom-class");
+    const card = container.firstChild?.firstChild;
+    expect(card).toHaveClass("custom-class");
   });
 });

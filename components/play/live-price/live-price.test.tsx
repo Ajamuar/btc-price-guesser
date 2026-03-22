@@ -2,9 +2,9 @@ import { render, screen } from "@testing-library/react";
 import { LivePrice } from "./index";
 
 describe("LivePrice", () => {
-  it("shows dash when loading", () => {
+  it("shows connecting when loading", () => {
     render(<LivePrice price={null} loading />);
-    expect(screen.getByText("—")).toBeInTheDocument();
+    expect(screen.getByText("Connecting…")).toBeInTheDocument();
   });
 
   it("shows dash when price is null and not loading", () => {

@@ -21,10 +21,10 @@ export default async function Page() {
     session.user.name ?? session.user.email ?? "Signed in";
 
   return (
-    <div className="flex min-h-screen w-full flex-col bg-teal-50 dark:bg-teal-950">
+    <div className="flex min-h-screen w-full flex-col bg-page-canvas">
       <SiteHeader session={session} />
       <main className="flex min-h-0 flex-1 flex-col items-center justify-center px-0 py-0 sm:px-8 sm:py-16 lg:px-12 lg:py-20">
-        <div className="w-full max-w-full flex-1 px-0 sm:max-w-2xl sm:px-6 lg:max-w-5xl lg:px-8">
+        <div className="w-full max-w-full px-0 sm:max-w-4xl sm:px-6 lg:max-w-7xl lg:px-8 xl:max-w-[88rem] 2xl:max-w-[96rem]">
           <MainContentCard>
             <PlayContent
               userDisplayName={userDisplayName}
