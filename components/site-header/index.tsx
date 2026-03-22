@@ -22,7 +22,7 @@ export async function SiteHeader({ session }: SiteHeaderProps) {
       >
         {t("appName")}
       </IntlLink>
-      <nav>
+      <nav aria-label={t("mainNav")}>
         {session ? (
           <IntlLink
             href="/auth/signout"

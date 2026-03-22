@@ -27,6 +27,6 @@ describe("PriceChart", () => {
     ];
     render(<PriceChart data={data} priceAtGuess={71050} />);
     expect(screen.getByText(/Guess price:/)).toBeInTheDocument();
-    expect(screen.getByText(/\$71,050\.00/)).toBeInTheDocument();
+    expect(screen.getAllByText(/\$71,050\.00/)).toHaveLength(2);
   });
 });

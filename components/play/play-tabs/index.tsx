@@ -17,7 +17,10 @@ export function PlayTabs({ currentUserId, refetchTrigger }: PlayTabsProps) {
 
   return (
     <Tabs value={value} onValueChange={setValue}>
-      <TabsList className="grid w-full grid-cols-2">
+      <TabsList
+        className="grid w-full grid-cols-2"
+        aria-label={t("tablistLabel")}
+      >
         <TabsTrigger value="leaderboard">{t("leaderboard")}</TabsTrigger>
         <TabsTrigger value="history">{t("history")}</TabsTrigger>
       </TabsList>

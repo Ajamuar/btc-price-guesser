@@ -34,7 +34,7 @@ export function CardPageShell({
   return (
     <div className={cn(CARD_PAGE_SHELL_OUTER_CLASS, className)}>
       <SiteHeader session={session} />
-      <main className={cn(CARD_PAGE_SHELL_MAIN_CLASS, mainClassName)}>
+      <main id="main-content" className={cn(CARD_PAGE_SHELL_MAIN_CLASS, mainClassName)}>
         {children}
       </main>
     </div>

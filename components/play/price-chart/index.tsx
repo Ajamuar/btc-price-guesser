@@ -42,9 +42,12 @@ export function PriceChart({ data, priceAtGuess = null }: PriceChartProps) {
 
   if (data.length === 0) {
     return (
-      <div className="w-full min-h-[300px] rounded-md border border-border bg-muted/30 flex items-center justify-center">
+      <section
+        className="w-full min-h-[300px] rounded-md border border-border bg-muted/30 flex items-center justify-center"
+        aria-label={t("chartRegionLabel")}
+      >
         <p className="text-sm text-muted-foreground">{t("empty")}</p>
-      </div>
+      </section>
     );
   }
 
@@ -89,9 +92,35 @@ export function PriceChart({ data, priceAtGuess = null }: PriceChartProps) {
         }).format(priceAtGuess)
       : "";
 
+  const latestPrice = data[data.length - 1]?.price ?? 0;
+  const summaryLatest = new Intl.NumberFormat(locale, {
+    style: "currency",
+    currency: "USD",
+    minimumFractionDigits: 2,
+    maximumFractionDigits: 2,
+  }).format(latestPrice);
+  const summaryLow = new Intl.NumberFormat(locale, {
+    style: "currency",
+    currency: "USD",
+    minimumFractionDigits: 2,
+    maximumFractionDigits: 2,
+  }).format(dataMin);
+  const summaryHigh = new Intl.NumberFormat(locale, {
+    style: "currency",
+    currency: "USD",
+    minimumFractionDigits: 2,
+    maximumFractionDigits: 2,
+  }).format(dataMax);
+
+  const tableRows = data.slice(-5);
+
   return (
-    <div className="w-full min-h-[300px] rounded-md border border-border bg-muted/30 p-2">
-      <ResponsiveContainer width="100%" height={chartHeight}>
+    <section
+      className="w-full min-h-[300px] rounded-md border border-border bg-muted/30 p-2"
+      aria-label={t("chartRegionLabel")}
+    >
+      <div aria-hidden="true">
+        <ResponsiveContainer width="100%" height={chartHeight}>
         <LineChart
           data={data}
           margin={{ top: 5, right: 10, left: 10, bottom: 5 }}
@@ -154,11 +183,52 @@ export function PriceChart({ data, priceAtGuess = null }: PriceChartProps) {
           )}
         </LineChart>
       </ResponsiveContainer>
+      </div>
+      <div className="sr-only">
+        <p>
+          {t("a11ySummary", {
+            latest: summaryLatest,
+            low: summaryLow,
+            high: summaryHigh,
+            count: String(data.length),
+          })}
+        </p>
+        <table>
+          <caption>{t("tableCaption")}</caption>
+          <thead>
+            <tr>
+              <th scope="col">{t("colTime")}</th>
+              <th scope="col">{t("colPrice")}</th>
+            </tr>
+          </thead>
+          <tbody>
+            {tableRows.map((row) => (
+              <tr key={row.timestamp}>
+                <td>{formatRelative(latestTimestamp - row.timestamp)}</td>
+                <td>
+                  {new Intl.NumberFormat(locale, {
+                    style: "currency",
+                    currency: "USD",
+                    minimumFractionDigits: 2,
+                    maximumFractionDigits: 2,
+                  }).format(row.price)}
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+        {priceAtGuess != null && (
+          <p>{t("a11yGuessLine", { price: guessPriceFormatted })}</p>
+        )}
+      </div>
       {priceAtGuess != null && (
-        <p className="text-xs text-muted-foreground mt-1 text-center">
+        <p
+          className="text-xs text-muted-foreground mt-1 text-center"
+          aria-hidden="true"
+        >
           {t("guessPriceLine", { price: guessPriceFormatted })}
         </p>
       )}
-    </div>
+    </section>
   );
 }

@@ -70,6 +70,7 @@ export function GuessButtons({
 
   return (
     <div className="flex flex-col items-center gap-2">
+      <p className="sr-only">{t("keyboardHint")}</p>
       <div className="flex gap-3">
         <Button
           size="lg"

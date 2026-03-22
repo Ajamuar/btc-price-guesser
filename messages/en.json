@@ -17,7 +17,11 @@
   "SiteHeader": {
     "appName": "BTC Price Guesser",
     "signIn": "Sign in",
-    "signOut": "Sign out"
+    "signOut": "Sign out",
+    "mainNav": "Account"
+  },
+  "SkipLink": {
+    "label": "Skip to main content"
   },
   "Auth": {
     "signInTitle": "Sign in",
@@ -72,6 +76,7 @@
   "GuessButtons": {
     "up": "Up",
     "down": "Down",
+    "keyboardHint": "When a guess is available, you can press Arrow Up or Arrow Down to submit without using the mouse.",
     "upAria": "Guess price will go up",
     "downAria": "Guess price will go down",
     "submitting": "Submitting…",
@@ -94,11 +99,18 @@
     "guessLabel": "Guess",
     "guessPriceLine": "Guess price: {price}",
     "now": "now",
-    "minusSeconds": "-{sec}s"
+    "minusSeconds": "-{sec}s",
+    "chartRegionLabel": "BTC price chart, last two minutes",
+    "a11ySummary": "Latest price {latest}. Range {low} to {high}. {count} points in the chart window.",
+    "tableCaption": "Recent BTC prices",
+    "colTime": "Time",
+    "colPrice": "Price",
+    "a11yGuessLine": "Your guess at submission: {price}."
   },
   "PlayTabs": {
     "leaderboard": "Leaderboard",
-    "history": "History"
+    "history": "History",
+    "tablistLabel": "Leaderboard and history"
   },
   "Leaderboard": {
     "loading": "Loading leaderboard…",

@@ -9,7 +9,7 @@ export async function GameRulesCard() {
         {t("title")}
       </h1>
       <div className="space-y-2 text-left text-sm text-muted-foreground sm:text-base">
-        <p className="font-medium text-foreground">{t("rulesHeading")}</p>
+        <h2 className="font-medium text-foreground">{t("rulesHeading")}</h2>
         <ul className="list-inside list-disc space-y-1">
           <li>{t("ruleGuess")}</li>
           <li>{t("ruleResolution")}</li>

@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import {
@@ -35,8 +36,14 @@ describe("Tabs", () => {
         <TabsContent value="b">Content B</TabsContent>
       </Tabs>
     );
-    expect(screen.getByRole("tabpanel")).toHaveTextContent("Content A");
-    expect(screen.queryByText("Content B")).not.toBeInTheDocument();
+    const tabA = screen.getByRole("tab", { name: /Tab A/i });
+    const tabB = screen.getByRole("tab", { name: /Tab B/i });
+    expect(tabA).toHaveAttribute("aria-selected", "true");
+    expect(tabB).toHaveAttribute("aria-selected", "false");
+    expect(tabA).toHaveAttribute("tabIndex", "0");
+    expect(tabB).toHaveAttribute("tabIndex", "-1");
+    expect(screen.getByText("Content A")).toBeVisible();
+    expect(screen.getByText("Content B")).not.toBeVisible();
   });
 
   it("marks selected trigger with aria-selected and data-state", () => {
@@ -99,8 +106,8 @@ describe("Tabs", () => {
         <TabsContent value="b">Content B</TabsContent>
       </Tabs>
     );
-    expect(screen.getByRole("tabpanel")).toHaveTextContent("Content B");
-    expect(screen.queryByText("Content A")).not.toBeInTheDocument();
+    expect(screen.getByText("Content B")).toBeVisible();
+    expect(screen.getByText("Content A")).not.toBeVisible();
   });
 
   it("TabsList has role tablist and data-slot", () => {
@@ -131,5 +138,48 @@ describe("Tabs", () => {
     const panel = screen.getByTestId("content");
     expect(panel).toHaveAttribute("role", "tabpanel");
     expect(panel).toHaveAttribute("data-slot", "tabs-content");
+  });
+
+  it("links tab triggers to tab panels with aria-controls and aria-labelledby", () => {
+    render(
+      <Tabs value="a" onValueChange={() => {}}>
+        <TabsList>
+          <TabsTrigger value="a">Tab A</TabsTrigger>
+          <TabsTrigger value="b">Tab B</TabsTrigger>
+        </TabsList>
+        <TabsContent value="a">Content A</TabsContent>
+        <TabsContent value="b">Content B</TabsContent>
+      </Tabs>
+    );
+    const tabA = screen.getByRole("tab", { name: /Tab A/i });
+    const panelA = screen.getByText("Content A").closest('[role="tabpanel"]');
+    expect(panelA).not.toBeNull();
+    expect(tabA).toHaveAttribute("aria-controls", panelA!.id);
+    expect(panelA).toHaveAttribute("aria-labelledby", tabA.id);
+  });
+
+  it("moves selection with ArrowRight when controlled", async () => {
+    function Controlled() {
+      const [value, setValue] = useState("a");
+      return (
+        <Tabs value={value} onValueChange={setValue}>
+          <TabsList>
+            <TabsTrigger value="a">Tab A</TabsTrigger>
+            <TabsTrigger value="b">Tab B</TabsTrigger>
+          </TabsList>
+          <TabsContent value="a">Content A</TabsContent>
+          <TabsContent value="b">Content B</TabsContent>
+        </Tabs>
+      );
+    }
+    const user = userEvent.setup();
+    render(<Controlled />);
+    screen.getByRole("tab", { name: /Tab A/i }).focus();
+    await user.keyboard("{ArrowRight}");
+    expect(screen.getByRole("tab", { name: /Tab B/i })).toHaveAttribute(
+      "data-state",
+      "active"
+    );
+    expect(screen.getByText("Content B")).toBeVisible();
   });
 });

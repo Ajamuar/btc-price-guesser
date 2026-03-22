@@ -38,8 +38,14 @@ export default async function LocaleLayout({ children, params }: Props) {
   }
   setRequestLocale(locale);
   const messages = await getMessages();
+  const tSkip = await getTranslations({ locale, namespace: "SkipLink" });
 
   return (
-    <NextIntlClientProvider messages={messages}>{children}</NextIntlClientProvider>
+    <NextIntlClientProvider messages={messages}>
+      <a href="#main-content" className="skip-to-content">
+        {tSkip("label")}
+      </a>
+      {children}
+    </NextIntlClientProvider>
   );
 }
