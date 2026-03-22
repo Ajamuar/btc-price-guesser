@@ -11,14 +11,24 @@ describe("PageContainer", () => {
     expect(screen.getByText("Hello")).toBeInTheDocument();
   });
 
-  it("applies default layout classes", () => {
+  it("applies default narrow layout classes", () => {
     const { container } = render(
       <PageContainer>
         <div>Content</div>
       </PageContainer>
     );
     const wrapper = container.firstChild;
-    expect(wrapper).toHaveClass("mx-auto", "w-full", "max-w-2xl", "px-0");
+    expect(wrapper).toHaveClass("w-full", "max-w-full", "sm:max-w-2xl");
+  });
+
+  it("applies wide variant classes", () => {
+    const { container } = render(
+      <PageContainer variant="wide">
+        <div>Content</div>
+      </PageContainer>
+    );
+    const wrapper = container.firstChild;
+    expect(wrapper).toHaveClass("sm:max-w-4xl", "lg:max-w-7xl");
   });
 
   it("merges custom className", () => {
