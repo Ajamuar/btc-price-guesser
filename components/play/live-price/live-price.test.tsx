@@ -13,8 +13,8 @@ describe("LivePrice", () => {
   });
 
   it("shows error message when error is set", () => {
-    render(<LivePrice price={null} error="Network error" />);
-    expect(screen.getByText("Network error")).toBeInTheDocument();
+    render(<LivePrice price={null} error="connection" />);
+    expect(screen.getByText("Connection error")).toBeInTheDocument();
   });
 
   it("shows formatted BTC price when price is set", () => {

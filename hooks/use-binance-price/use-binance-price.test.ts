@@ -4,6 +4,7 @@ import { useBinancePrice } from ".";
 const mockWsInstance = {
   onopen: () => {},
   onmessage: () => {},
+  onerror: () => {},
   close: () => {},
 };
 
@@ -18,6 +19,7 @@ describe("useBinancePrice", () => {
   beforeEach(() => {
     mockWsInstance.onopen = () => {};
     mockWsInstance.onmessage = () => {};
+    mockWsInstance.onerror = () => {};
     mockWsInstance.close = () => {};
     MockWebSocket.mockClear();
     MockWebSocket.mockImplementation(() => mockWsInstance);
@@ -60,6 +62,23 @@ describe("useBinancePrice", () => {
     });
     await waitFor(() => {
       expect(result.current.price).toBe(71234.56);
+    });
+  });
+
+  it("sets connection error when WebSocket errors", async () => {
+    const { result } = renderHook(() => useBinancePrice());
+    await waitFor(() => {
+      expect(MockWebSocket).toHaveBeenCalled();
+    });
+    const ws = MockWebSocket.mock.results[0].value;
+    await act(async () => {
+      ws.onopen();
+    });
+    await act(async () => {
+      ws.onerror();
+    });
+    await waitFor(() => {
+      expect(result.current.error).toBe("connection");
     });
   });
 });

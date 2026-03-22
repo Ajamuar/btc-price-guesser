@@ -18,11 +18,13 @@ type BinanceTradeEvent = {
   T: number;
 };
 
+export type BinancePriceError = "connection" | "closed";
+
 export function useBinancePrice() {
   const [price, setPrice] = useState<number | null>(null);
   const [priceHistory, setPriceHistory] = useState<PricePoint[]>([]);
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
+  const [error, setError] = useState<BinancePriceError | null>(null);
 
   const wsRef = useRef<WebSocket | null>(null);
   const lastChartTimeRef = useRef<number>(0);
@@ -81,13 +83,13 @@ export function useBinancePrice() {
             connect();
           }, 3000);
         } else {
-          setError("Connection closed. Refresh to reconnect.");
+          setError("closed");
         }
       };
 
       ws.onerror = () => {
         if (wsRef.current !== ws) return;
-        setError("Connection error");
+        setError("connection");
       };
     }
 

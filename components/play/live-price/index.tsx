@@ -2,13 +2,14 @@
 
 import { useEffect, useState } from "react";
 import { useLocale, useTranslations } from "next-intl";
+import type { BinancePriceError } from "@/hooks/use-binance-price";
 
 const ANNOUNCE_DEBOUNCE_MS = 5000;
 
 type LivePriceProps = {
   price: number | null;
   loading?: boolean;
-  error?: string | null;
+  error?: BinancePriceError | null;
 };
 
 function useDebounced<T>(value: T, delayMs: number): T {
@@ -48,9 +49,11 @@ export function LivePrice({ price, loading = false, error = null }: LivePricePro
     );
   }
   if (error) {
+    const errorMessage =
+      error === "closed" ? t("errorClosed") : t("errorConnection");
     return (
       <p className="text-sm text-destructive" role="alert">
-        {error}
+        {errorMessage}
       </p>
     );
   }

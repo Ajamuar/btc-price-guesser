@@ -1,5 +1,6 @@
 import { Geist, Geist_Mono } from "next/font/google";
 import { getLocale } from "next-intl/server";
+import { Toaster } from "@/components/ui/sonner";
 import "./globals.css";
 
 const geistSans = Geist({
@@ -25,6 +26,7 @@ export default async function RootLayout({
         className={`${geistSans.variable} ${geistMono.variable} min-w-full antialiased`}
       >
         {children}
+        <Toaster />
       </body>
     </html>
   );

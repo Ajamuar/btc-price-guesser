@@ -20,6 +20,8 @@ jest.mock("@/hooks/use-game-play", () => ({
     nextCheckInSeconds: null,
     handleGuess: mockHandleGuess,
     priceAtGuess: null,
+    guessError: null,
+    mePollError: null,
   }),
 }));
 

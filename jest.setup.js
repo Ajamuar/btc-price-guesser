@@ -1,6 +1,15 @@
 import React from "react";
 import "@testing-library/jest-dom";
 
+jest.mock("sonner", () => ({
+  toast: {
+    error: jest.fn(),
+    success: jest.fn(),
+    message: jest.fn(),
+  },
+  Toaster: () => null,
+}));
+
 jest.mock("@/i18n/navigation", () => ({
   Link: ({ href, children, ...props }) =>
     React.createElement("a", { href, ...props }, children),

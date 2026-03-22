@@ -12,7 +12,12 @@ type LastResult = "win" | "loss" | "tie" | null;
 
 type Resolution = { priceAtGuess: number; priceAtResolution: number };
 
+export type GuessSubmitError = "network" | "server";
+
+export type MePollError = "stopped";
+
 const SIXTY_SECONDS_MS = 60_000;
+const ME_POLL_MAX_FAILURES = 5;
 
 export type UseGamePlayParams = {
   initialScore: number;
@@ -28,6 +33,8 @@ export type UseGamePlayReturn = {
   nextCheckInSeconds: number | null;
   handleGuess: (direction: "up" | "down", priceAtGuess: number) => Promise<void>;
   priceAtGuess: number | null;
+  guessError: GuessSubmitError | null;
+  mePollError: MePollError | null;
 };
 
 export function useGamePlay({
@@ -43,25 +50,56 @@ export function useGamePlay({
   const [nextCheckInSeconds, setNextCheckInSeconds] = useState<number | null>(
     null
   );
+  const [guessError, setGuessError] = useState<GuessSubmitError | null>(null);
+  const [mePollError, setMePollError] = useState<MePollError | null>(null);
 
   const scoreRef = useRef(initialScore);
   const timeoutIdRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const intervalIdRef = useRef<ReturnType<typeof setInterval> | null>(null);
+  const mePollFailureCountRef = useRef(0);
 
   scoreRef.current = score;
 
   useEffect(() => {
+    if (pendingGuess == null) {
+      setMePollError(null);
+      mePollFailureCountRef.current = 0;
+    }
+  }, [pendingGuess]);
+
+  useEffect(() => {
     if (pendingGuess == null) return;
+
+    mePollFailureCountRef.current = 0;
 
     const delayMs = Math.max(
       0,
       SIXTY_SECONDS_MS - (Date.now() - pendingGuess.timestamp)
     );
 
+    function clearPollInterval() {
+      if (intervalIdRef.current) {
+        clearInterval(intervalIdRef.current);
+        intervalIdRef.current = null;
+      }
+    }
+
+    function recordPollFailure() {
+      mePollFailureCountRef.current += 1;
+      if (mePollFailureCountRef.current >= ME_POLL_MAX_FAILURES) {
+        clearPollInterval();
+        setMePollError("stopped");
+      }
+    }
+
     function startPolling() {
       intervalIdRef.current = setInterval(async () => {
         try {
           const res = await fetch("/api/me");
+          if (!res.ok) {
+            recordPollFailure();
+            return;
+          }
           const text = await res.text();
           const data = text
             ? (JSON.parse(text) as {
@@ -73,11 +111,11 @@ export function useGamePlay({
           const newScore = data.score ?? scoreRef.current;
           const newPending = data.pendingGuess ?? null;
 
+          mePollFailureCountRef.current = 0;
+          setMePollError(null);
+
           if (newPending == null) {
-            if (intervalIdRef.current) {
-              clearInterval(intervalIdRef.current);
-              intervalIdRef.current = null;
-            }
+            clearPollInterval();
             if (data.resolution) {
               setLastResolution({
                 priceAtGuess: data.resolution.priceAtGuess,
@@ -97,7 +135,7 @@ export function useGamePlay({
           setScore(newScore);
           setPendingGuess(newPending);
         } catch {
-          // ignore poll errors; next tick will retry
+          recordPollFailure();
         }
       }, 1000);
     }
@@ -142,6 +180,7 @@ export function useGamePlay({
 
   const handleGuess = useCallback(
     async (direction: "up" | "down", priceAtGuess: number) => {
+      setGuessError(null);
       setLastResult(null);
       setLastResolution(null);
       setGuessLoading(true);
@@ -158,11 +197,14 @@ export function useGamePlay({
               pendingGuess?: PendingGuess;
             })
           : {};
-        if (!res.ok) return;
+        if (!res.ok) {
+          setGuessError("server");
+          return;
+        }
         setScore(data.score ?? scoreRef.current);
         setPendingGuess(data.pendingGuess ?? null);
       } catch {
-        // e.g. JSON parse error or network error; leave state unchanged
+        setGuessError("network");
       } finally {
         setGuessLoading(false);
       }
@@ -181,5 +223,7 @@ export function useGamePlay({
     nextCheckInSeconds,
     handleGuess,
     priceAtGuess,
+    guessError,
+    mePollError,
   };
 }

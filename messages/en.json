@@ -92,7 +92,14 @@
   },
   "LivePrice": {
     "connecting": "Connecting…",
-    "btcPrice": "BTC: {price}"
+    "btcPrice": "BTC: {price}",
+    "errorConnection": "Connection error",
+    "errorClosed": "Connection closed. Refresh to reconnect."
+  },
+  "Toast": {
+    "guessNetwork": "Couldn’t submit your guess. Check your connection.",
+    "guessServer": "Couldn’t submit your guess. Please try again.",
+    "mePollStopped": "Couldn’t refresh your result after several tries. Refresh the page or contact the admin."
   },
   "PriceChart": {
     "empty": "Connecting… price chart will appear when data is available.",

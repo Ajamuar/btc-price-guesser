@@ -2,6 +2,7 @@
 
 import { useEffect, useRef } from "react";
 import { useLocale, useTranslations } from "next-intl";
+import { toast } from "sonner";
 import { LivePrice } from "@/components/play/live-price";
 import { PriceChart } from "@/components/play/price-chart";
 import { GuessButtons } from "@/components/play/guess-buttons";
@@ -23,6 +24,8 @@ export function GameContainer({
 }: GameContainerProps) {
   const locale = useLocale();
   const t = useTranslations("Game");
+  const tLivePrice = useTranslations("LivePrice");
+  const tToast = useTranslations("Toast");
   const { price, priceHistory, loading, error } = useBinancePrice();
   const {
     score,
@@ -33,15 +36,60 @@ export function GameContainer({
     nextCheckInSeconds,
     handleGuess,
     priceAtGuess,
+    guessError,
+    mePollError,
   } = useGamePlay({ initialScore, initialPendingGuess });
 
   const prevLastResultRef = useRef<typeof lastResult>(null);
+  const prevPriceErrorRef = useRef<typeof error>(null);
+  const prevGuessErrorRef = useRef<typeof guessError>(null);
+  const prevMePollErrorRef = useRef<typeof mePollError>(null);
+
   useEffect(() => {
     if (lastResult != null && prevLastResultRef.current === null) {
       onResolution?.();
     }
     prevLastResultRef.current = lastResult;
   }, [lastResult, onResolution]);
+
+  useEffect(() => {
+    if (
+      error != null &&
+      (prevPriceErrorRef.current === null || prevPriceErrorRef.current !== error)
+    ) {
+      const message =
+        error === "closed"
+          ? tLivePrice("errorClosed")
+          : tLivePrice("errorConnection");
+      toast.error(message);
+    }
+    prevPriceErrorRef.current = error;
+  }, [error, tLivePrice]);
+
+  useEffect(() => {
+    if (
+      guessError != null &&
+      (prevGuessErrorRef.current === null ||
+        prevGuessErrorRef.current !== guessError)
+    ) {
+      const message =
+        guessError === "server"
+          ? tToast("guessServer")
+          : tToast("guessNetwork");
+      toast.error(message);
+    }
+    prevGuessErrorRef.current = guessError;
+  }, [guessError, tToast]);
+
+  useEffect(() => {
+    if (
+      mePollError === "stopped" &&
+      prevMePollErrorRef.current !== "stopped"
+    ) {
+      toast.error(tToast("mePollStopped"));
+    }
+    prevMePollErrorRef.current = mePollError;
+  }, [mePollError, tToast]);
 
   const formatMoney = (n: number) =>
     new Intl.NumberFormat(locale, {
@@ -92,14 +140,23 @@ export function GameContainer({
           )}
         </div>
       )}
-      {pendingGuess != null && nextCheckInSeconds !== null && (
-        <p className="text-sm text-muted-foreground">
-          {t("nextCheck", { seconds: String(nextCheckInSeconds) })}
+      {pendingGuess != null && mePollError === "stopped" && (
+        <p className="text-sm text-destructive" role="alert">
+          {tToast("mePollStopped")}
         </p>
       )}
-      {pendingGuess != null && nextCheckInSeconds === null && (
-        <p className="text-sm text-muted-foreground">{t("checkingResult")}</p>
-      )}
+      {pendingGuess != null &&
+        mePollError !== "stopped" &&
+        nextCheckInSeconds !== null && (
+          <p className="text-sm text-muted-foreground">
+            {t("nextCheck", { seconds: String(nextCheckInSeconds) })}
+          </p>
+        )}
+      {pendingGuess != null &&
+        mePollError !== "stopped" &&
+        nextCheckInSeconds === null && (
+          <p className="text-sm text-muted-foreground">{t("checkingResult")}</p>
+        )}
       <GuessButtons
         hasPendingGuess={pendingGuess != null}
         selectedDirection={

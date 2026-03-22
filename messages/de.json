@@ -90,7 +90,14 @@
   },
   "LivePrice": {
     "connecting": "Verbinden…",
-    "btcPrice": "BTC: {price}"
+    "btcPrice": "BTC: {price}",
+    "errorConnection": "Verbindungsfehler",
+    "errorClosed": "Verbindung getrennt. Seite neu laden, um erneut zu verbinden."
+  },
+  "Toast": {
+    "guessNetwork": "Tipp konnte nicht gesendet werden. Bitte Verbindung prüfen.",
+    "guessServer": "Tipp konnte nicht gesendet werden. Bitte erneut versuchen.",
+    "mePollStopped": "Ergebnis konnte nach mehreren Versuchen nicht aktualisiert werden. Seite neu laden oder den Admin kontaktieren."
   },
   "PriceChart": {
     "empty": "Verbinden… Der Kurs-Chart erscheint, sobald Daten da sind.",
