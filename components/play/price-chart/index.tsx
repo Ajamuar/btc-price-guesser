@@ -1,5 +1,6 @@
 "use client";
 
+import { useEffect, useRef } from "react";
 import { useLocale, useTranslations } from "next-intl";
 import {
   ResponsiveContainer,
@@ -33,6 +34,19 @@ export function PriceChart({ data, priceAtGuess = null }: PriceChartProps) {
   const locale = useLocale();
   const t = useTranslations("PriceChart");
   const chartHeight = 300;
+  const visualChartRef = useRef<HTMLDivElement | null>(null);
+
+  useEffect(() => {
+    const root = visualChartRef.current;
+    if (!root) return;
+
+    // Recharts can inject focusable SVG nodes; force them out of tab order.
+    const focusableNodes = root.querySelectorAll<HTMLElement>("[tabindex], svg, [role='application']");
+    focusableNodes.forEach((node) => {
+      node.tabIndex = -1;
+      node.setAttribute("focusable", "false");
+    });
+  }, [data, priceAtGuess]);
 
   const formatRelative = (msAgo: number) => {
     if (msAgo <= 0) return t("now");
@@ -119,10 +133,18 @@ export function PriceChart({ data, priceAtGuess = null }: PriceChartProps) {
       className="w-full min-h-[300px] rounded-md border border-border bg-muted/30 p-2"
       aria-label={t("chartRegionLabel")}
     >
-      <div aria-hidden="true">
+      <div
+        ref={visualChartRef}
+        aria-hidden="true"
+        onFocusCapture={(event) => {
+          const target = event.target as HTMLElement;
+          target.blur();
+        }}
+      >
         <ResponsiveContainer width="100%" height={chartHeight}>
         <LineChart
           data={data}
+          accessibilityLayer={false}
           margin={{ top: 5, right: 10, left: 10, bottom: 5 }}
         >
           <CartesianGrid strokeDasharray="3 3" className="stroke-border/50" />
